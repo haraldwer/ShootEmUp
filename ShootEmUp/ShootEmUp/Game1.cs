@@ -89,5 +89,9 @@ namespace ShootEmUp
             base.Draw(gameTime);
         }
         
+        public void GameUpdate()
+        {
+
+        }
     }
 }
