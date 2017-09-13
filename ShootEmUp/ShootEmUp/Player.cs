@@ -11,79 +11,108 @@ namespace ShootEmUp
 {
     class Player
     {
-        Texture2D sprite;
-        Vector2 pos;
-        Vector2 speed;
-        float movementSpeed = 0.7f;
-        float maxSpeed = 4f;
+        Texture2D mySprite;
+        Vector2 myPos;
+        Vector2 mySpeed;
+        float myMovementSpeed = 0.7f;
+        float myMaxSpeed = 4f;
+        int myBulletTimer = 0;
+        float myDir = 0;
         
 
         // Constructor
         public Player(Texture2D aSprite)
         {
-            sprite = aSprite;
-            pos = new Vector2(100, 100);
-            speed = new Vector2(0, 0);
+            mySprite = aSprite;
+            myPos = new Vector2(100, 100);
+            mySpeed = new Vector2(0, 0);
         }
 
 
         // Update-event
-        public void Update()
+        public void Update(List<Bullet> aBulletList, Texture2D aBulletSprite)
         {
-            speed = (speed / 10) * 9; // Friction (makes it slow down)
+            mySpeed = (mySpeed / 10) * 9; // Friction (makes it slow down)
 
+            #region Controls
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                speed.Y -= movementSpeed;
+                mySpeed.Y -= myMovementSpeed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                speed.Y += movementSpeed;
+                mySpeed.Y += myMovementSpeed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                speed.X -= movementSpeed;
+                mySpeed.X -= myMovementSpeed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                speed.X += movementSpeed;
+                mySpeed.X += myMovementSpeed;
             }
+            #endregion
 
-            if (speed.X > maxSpeed)
+            #region Limiting speed
+            if (mySpeed.X > myMaxSpeed)
             {
-                speed.X = maxSpeed;
+                mySpeed.X = myMaxSpeed;
             }
-            if (speed.X < -maxSpeed)
+            if (mySpeed.X < -myMaxSpeed)
             {
-                speed.X = -maxSpeed;
+                mySpeed.X = -myMaxSpeed;
             }
-            if (speed.Y > maxSpeed)
+            if (mySpeed.Y > myMaxSpeed)
             {
-                speed.Y = maxSpeed;
+                mySpeed.Y = myMaxSpeed;
             }
-            if (speed.Y < -maxSpeed)
+            if (mySpeed.Y < -myMaxSpeed)
             {
-                speed.Y = -maxSpeed;
+                mySpeed.Y = -myMaxSpeed;
             }
+            #endregion
 
+            #region Diagonal movement
             // A poor attempt at making natural movement
-            if ((Math.Abs(speed.X) + Math.Abs(speed.Y)) > maxSpeed)
+            if ((Math.Abs(mySpeed.X) + Math.Abs(mySpeed.Y)) > myMaxSpeed)
             {
-                float diagonalSpeed = (float)Math.Sqrt(Convert.ToDouble(Math.Pow(maxSpeed, 2) / 2));
-                if (speed.X > diagonalSpeed){speed.X = diagonalSpeed;}
-                if (speed.X < -diagonalSpeed) { speed.X = -diagonalSpeed; }
-                if(speed.Y > diagonalSpeed) {speed.Y = diagonalSpeed;}
-                if (speed.Y < -diagonalSpeed) { speed.Y = -diagonalSpeed; }
+                float diagonalSpeed = (float)Math.Sqrt(Convert.ToDouble(Math.Pow(myMaxSpeed, 2) / 2));
+                if (mySpeed.X > diagonalSpeed){mySpeed.X = diagonalSpeed;}
+                if (mySpeed.X < -diagonalSpeed) { mySpeed.X = -diagonalSpeed; }
+                if(mySpeed.Y > diagonalSpeed) {mySpeed.Y = diagonalSpeed;}
+                if (mySpeed.Y < -diagonalSpeed) { mySpeed.Y = -diagonalSpeed; }
             }
+            #endregion
 
-            pos += speed; // Add speed to position
+            #region Direction
+            MouseState mousePosition = Mouse.GetState();
+            myDir = (float)Math.Atan2(mousePosition.Y-myPos.Y, mousePosition.X-myPos.X); // Calculate what direction player is facing (this is used for example when drawing)
+            if (myDir == 0 && mySpeed == new Vector2(0, 0))
+            {
+                myDir = -1.57f;
+            }
+            #endregion
+
+            myPos += mySpeed; // Add speed to position
+
+            #region Shooting
+            if (myBulletTimer > 0) // If bulletTimer is above 0
+            {
+                myBulletTimer -= 1; // Count down
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Space)) // If key is pressed and bulletTimer is below 0
+            {
+                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir)); // Add bullet to bulletList
+                myBulletTimer = 10; // Reset bulletTimer
+            }
+            #endregion
         }
 
         // Draw-event
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(sprite, pos, Color.White);
+            spriteBatch.Draw(mySprite, myPos, Color.White);
             spriteBatch.End();
         }
 

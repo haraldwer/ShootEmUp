@@ -11,31 +11,31 @@ namespace ShootEmUp
 {
     class Bullet
     {
-        Texture2D sprite;
-        Vector2 pos;
-        Vector2 speed;
-        float movementSpeed = 0.7f;
-        float dir = 0f;
+        Texture2D mySprite;
+        Vector2 myPos;
+        Vector2 mySpeed;
+        float myDir = 0f;
 
         // Constructor
         public Bullet(Texture2D aSprite, Vector2 aPos, float aDir)
         {
-            sprite = aSprite;
-            pos = aPos;
-            dir = aDir;
+            mySprite = aSprite;
+            myPos = aPos;
+            myDir = aDir;
+            mySpeed = new Vector2((float)Math.Cos(myDir), (float)Math.Sin(myDir)) * 10;
         }
 
         // Update-event
         public void Update()
         {
-            pos += speed;
+            myPos += mySpeed;
         }
 
         // Draw-event
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(sprite, pos, Color.White);
+            spriteBatch.Draw(mySprite, myPos + new Vector2(32, 32), null, Color.White, myDir + 1.57f, new Vector2(32, 32), 1.0f, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
 

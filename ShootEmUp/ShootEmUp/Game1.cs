@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System;
 
 namespace ShootEmUp
 {
@@ -12,8 +14,13 @@ namespace ShootEmUp
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D playerSprite;
+        Texture2D bulletSprite; // I assume we are going to add more kinds of bullet later
+        Texture2D crosshair;
         Player player;
+        List<Bullet> bulletList;
         
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -29,7 +36,7 @@ namespace ShootEmUp
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+            bulletList = new List<Bullet>();
             base.Initialize();
         }
 
@@ -43,7 +50,7 @@ namespace ShootEmUp
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             playerSprite = Content.Load<Texture2D>("sprites/player");
-
+            bulletSprite = Content.Load<Texture2D>("sprites/bullet");
             player = new Player(playerSprite);
             // TODO: use this.Content to load your game content here
         }
@@ -68,8 +75,13 @@ namespace ShootEmUp
                 Exit();
 
             // TODO: Add your update logic here
+            
+            for (int i = 0; i < bulletList.Count; i++)
+            {
+                bulletList[i].Update();
+            }
 
-            player.Update();
+            player.Update(bulletList, bulletSprite);
 
             base.Update(gameTime);
         }
@@ -82,9 +94,16 @@ namespace ShootEmUp
         {
             GraphicsDevice.Clear(Color.DimGray); // Background
 
+            foreach (Bullet b in bulletList) b.Draw(spriteBatch);
             // TODO: Add your drawing code here
 
             player.Draw(spriteBatch); // Draw player
+
+            // Drawing crosshair
+            MouseState mousePosition = Mouse.GetState();
+            spriteBatch.Begin();
+            spriteBatch.Draw(playerSprite, new Vector2(mousePosition.X, mousePosition.Y), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
