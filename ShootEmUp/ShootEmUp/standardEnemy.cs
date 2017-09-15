@@ -22,13 +22,13 @@ namespace ShootEmUp
             mySprite = aSprite;
             myPos = aPos;
             myDir = aDir;
-            mySpeed = new Vector2((float)Math.Cos(myDir), (float)Math.Sin(myDir)) * 10;
+            //mySpeed = new Vector2((float)Math.Cos(myDir), (float)Math.Sin(myDir)) * 10;
         }
 
         // Update-event
         public void Update()
         {
-            myPos += mySpeed;
+            //myPos += mySpeed;
         }
 
         // Draw-event

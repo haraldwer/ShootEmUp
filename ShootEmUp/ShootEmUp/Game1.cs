@@ -16,9 +16,10 @@ namespace ShootEmUp
         Texture2D playerSprite;
         Texture2D bulletSprite; // I assume we are going to add more kinds of bullet later
         Texture2D crosshair;
+        Texture2D standardEnemySprite;
         Player player;
         List<Bullet> bulletList;
-        
+        List<StandardEnemy> standardEnemyList;
 
 
         public Game1()
@@ -51,7 +52,9 @@ namespace ShootEmUp
 
             playerSprite = Content.Load<Texture2D>("sprites/player");
             bulletSprite = Content.Load<Texture2D>("sprites/bullet");
+            standardEnemySprite = Content.Load<Texture2D>("sprites/enemy");
             player = new Player(playerSprite);
+            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(200, 200), 0)); // Just for testing the enemy
             // TODO: use this.Content to load your game content here
         }
 
@@ -79,6 +82,11 @@ namespace ShootEmUp
             for (int i = 0; i < bulletList.Count; i++)
             {
                 bulletList[i].Update();
+            }
+
+            for (int i = 0; i < standardEnemyList.Count; i++)
+            {
+                standardEnemyList[i].Update();
             }
 
             player.Update(bulletList, bulletSprite);
