@@ -95,3 +95,4 @@ C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\obj\x86\Debug\ShootEmUp.csprojResolveAssemblyReference.cache
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\obj\x86\Debug\ShootEmUp.exe
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\obj\x86\Debug\ShootEmUp.pdb
+C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Crosshair.xnb

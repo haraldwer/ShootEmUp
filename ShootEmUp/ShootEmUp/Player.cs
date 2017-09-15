@@ -29,7 +29,7 @@ namespace ShootEmUp
 
 
         // Update-event
-        public void Update(List<Bullet> aBulletList, Texture2D aBulletSprite)
+        public void Update(List<Bullet> aBulletList, Texture2D aBulletSprite, Vector2 aViewPos, Vector2 aMousePosition)
         {
             mySpeed = (mySpeed / 10) * 9; // Friction (makes it slow down)
 
@@ -84,8 +84,7 @@ namespace ShootEmUp
             #endregion
 
             #region Direction
-            MouseState mousePosition = Mouse.GetState();
-            myDir = (float)Math.Atan2(mousePosition.Y-myPos.Y, mousePosition.X-myPos.X); // Calculate what direction player is facing (this is used for example when drawing)
+            myDir = (float)Math.Atan2(aMousePosition.Y+aViewPos.Y-myPos.Y, aMousePosition.X+aViewPos.X-myPos.X); // Calculate what direction player is facing (this is used for example when drawing)
             if (myDir == 0 && mySpeed == new Vector2(0, 0))
             {
                 myDir = -1.57f;
@@ -101,7 +100,7 @@ namespace ShootEmUp
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Space)) // If key is pressed and bulletTimer is below 0
             {
-                aBulletList.Add(new Bullet(aBulletSprite, new Vector2(100, 100), myDir)); // Add bullet to bulletList
+                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir)); // Add bullet to bulletList
                 myBulletTimer = 10; // Reset bulletTimer
             }
             #endregion
@@ -111,7 +110,7 @@ namespace ShootEmUp
         public void Draw(SpriteBatch spriteBatch, Vector2 aViewPos)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(mySprite, new Vector2(200, 200), Color.White);
+            spriteBatch.Draw(mySprite, myPos + new Vector2(32, 32) - aViewPos, null, Color.White, myDir - 1.57f, new Vector2(32, 32), 1.0f, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
 
