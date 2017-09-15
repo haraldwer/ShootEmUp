@@ -12,7 +12,7 @@ namespace ShootEmUp
     class StandardEnemy
     {
         Texture2D mySprite;
-        Vector2 myPos;
+        public Vector2 myPos;
         Vector2 mySpeed;
         float myDir = 0f;
 
@@ -28,14 +28,14 @@ namespace ShootEmUp
         // Update-event
         public void Update()
         {
-            myPos += mySpeed;
+            //myPos += mySpeed;
         }
 
         // Draw-event
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 aViewPos)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(mySprite, myPos + new Vector2(32, 32), null, Color.White, myDir + 1.57f, new Vector2(32, 32), 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mySprite, myPos + new Vector2(32, 32)-aViewPos, null, Color.White, myDir + 1.57f, new Vector2(32, 32), 1.0f, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
 

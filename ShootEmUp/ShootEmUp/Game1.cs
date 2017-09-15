@@ -20,6 +20,8 @@ namespace ShootEmUp
         Player player;
         List<Bullet> bulletList;
         List<StandardEnemy> standardEnemyList;
+        public Vector2 viewPos = new Vector2(100, 100);
+        Vector2 oldViewPos = new Vector2(100, 100);
 
 
         public Game1()
@@ -91,7 +93,9 @@ namespace ShootEmUp
             }
 
             player.Update(bulletList, bulletSprite);
-
+            //oldViewPos = viewPos;
+            viewPos = viewPos + ((player.myPos - viewPos) * 0.3f);
+            //UpdateViewPos();
             base.Update(gameTime);
         }
 
@@ -103,11 +107,11 @@ namespace ShootEmUp
         {
             GraphicsDevice.Clear(Color.DimGray); // Background
 
-            foreach (Bullet b in bulletList) b.Draw(spriteBatch);
-            foreach (StandardEnemy e in standardEnemyList) e.Draw(spriteBatch);
+            foreach (Bullet b in bulletList) b.Draw(spriteBatch, viewPos);
+            foreach (StandardEnemy e in standardEnemyList) e.Draw(spriteBatch, viewPos);
             // TODO: Add your drawing code here
 
-            player.Draw(spriteBatch); // Draw player
+            player.Draw(spriteBatch, viewPos); // Draw player
 
             // Drawing crosshair
             MouseState mousePosition = Mouse.GetState();
@@ -118,9 +122,11 @@ namespace ShootEmUp
             base.Draw(gameTime);
         }
         
-        public void GameUpdate()
+        public void UpdateViewPos()
         {
-
+            /*player.myPos = player.myPos - viewPos;
+            foreach (Bullet b in bulletList) { b.myPos += oldViewPos; b.myPos -= viewPos; }
+            foreach (StandardEnemy e in standardEnemyList) { e.myPos += oldViewPos; e.myPos -= viewPos; }*/
         }
     }
 }

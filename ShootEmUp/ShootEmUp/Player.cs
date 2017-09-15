@@ -12,13 +12,12 @@ namespace ShootEmUp
     class Player
     {
         Texture2D mySprite;
-        Vector2 myPos;
+        public Vector2 myPos;
         Vector2 mySpeed;
         float myMovementSpeed = 0.7f;
         float myMaxSpeed = 4f;
         int myBulletTimer = 0;
         float myDir = 0;
-        
 
         // Constructor
         public Player(Texture2D aSprite)
@@ -102,17 +101,17 @@ namespace ShootEmUp
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Space)) // If key is pressed and bulletTimer is below 0
             {
-                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir)); // Add bullet to bulletList
+                aBulletList.Add(new Bullet(aBulletSprite, new Vector2(100, 100), myDir)); // Add bullet to bulletList
                 myBulletTimer = 10; // Reset bulletTimer
             }
             #endregion
         }
 
         // Draw-event
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 aViewPos)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(mySprite, myPos, Color.White);
+            spriteBatch.Draw(mySprite, new Vector2(200, 200), Color.White);
             spriteBatch.End();
         }
 
