@@ -74,13 +74,13 @@ namespace ShootEmUp
 
             #region Diagonal movement
             // A poor attempt at making natural movement
-            if ((Math.Abs(mySpeed.X) + Math.Abs(mySpeed.Y)) > myMaxSpeed)
+            float tempDiagonalSpeed = (float)Math.Sqrt(Convert.ToDouble(Math.Pow(myMaxSpeed, 2) / 2));
+            if ((Math.Abs(mySpeed.X) + Math.Abs(mySpeed.Y)) > tempDiagonalSpeed)
             {
-                float diagonalSpeed = (float)Math.Sqrt(Convert.ToDouble(Math.Pow(myMaxSpeed, 2) / 2));
-                if (mySpeed.X > diagonalSpeed){mySpeed.X = diagonalSpeed;}
-                if (mySpeed.X < -diagonalSpeed) { mySpeed.X = -diagonalSpeed; }
-                if(mySpeed.Y > diagonalSpeed) {mySpeed.Y = diagonalSpeed;}
-                if (mySpeed.Y < -diagonalSpeed) { mySpeed.Y = -diagonalSpeed; }
+                if (mySpeed.X > tempDiagonalSpeed){mySpeed.X = tempDiagonalSpeed;}
+                if (mySpeed.X < -tempDiagonalSpeed) { mySpeed.X = -tempDiagonalSpeed; }
+                if(mySpeed.Y > tempDiagonalSpeed) {mySpeed.Y = tempDiagonalSpeed;}
+                if (mySpeed.Y < -tempDiagonalSpeed) { mySpeed.Y = -tempDiagonalSpeed; }
             }
             #endregion
 
