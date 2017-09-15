@@ -23,7 +23,7 @@ namespace ShootEmUp
         public Player(Texture2D aSprite)
         {
             mySprite = aSprite;
-            myPos = new Vector2(100, 100);
+            myPos = new Vector2(75, 75);
             mySpeed = new Vector2(0, 0);
         }
 
@@ -104,6 +104,8 @@ namespace ShootEmUp
                 myBulletTimer = 10; // Reset bulletTimer
             }
             #endregion
+
+            
         }
 
         // Draw-event

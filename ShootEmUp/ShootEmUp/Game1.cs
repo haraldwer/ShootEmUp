@@ -27,12 +27,12 @@ namespace ShootEmUp
         int windowHeight = 700;
         int windowWidth = 700;
         public Vector2 mousePosition;
-        int[,,] map = new int[1, 2, 3];
+        int[,,] map = new int[1, 4, 3];
 
         #region map
         private void CreateMap(int aLevel)
         {
-            int tempNumberOfObjects = 2;
+            int tempNumberOfObjects = 4;
             map[0, 0, 0] = 0; // object type
             map[0, 0, 1] = 2; // x pos
             map[0, 0, 2] = 2; // y pos
@@ -41,7 +41,15 @@ namespace ShootEmUp
             map[0, 1, 1] = 2;
             map[0, 1, 2] = 3;
 
-            for(int i = 0; i < tempNumberOfObjects; i++)
+            map[0, 2, 0] = 0;
+            map[0, 2, 1] = 2;
+            map[0, 2, 2] = 4;
+
+            map[0, 3, 0] = 0;
+            map[0, 3, 1] = 3;
+            map[0, 3, 2] = 4;
+
+            for (int i = 0; i < tempNumberOfObjects; i++)
             {
                 envorimentList.Add(new EnvironmentObject(map[0,i, 0], new Vector2(map[0, i, 1], map[0,i, 2]), wallSprite));
             }
@@ -90,7 +98,7 @@ namespace ShootEmUp
             bulletSprite = Content.Load<Texture2D>("sprites/bullet");
             standardEnemySprite = Content.Load<Texture2D>("sprites/Player");
             crosshair = Content.Load<Texture2D>("sprites/crosshair");
-            wallSprite = Content.Load<Texture2D>("sprites/crosshair");
+            wallSprite = Content.Load<Texture2D>("sprites/Wall");
             player = new Player(playerSprite);
             standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f)); // Just for testing the enemy
             CreateMap(0);
@@ -162,11 +170,6 @@ namespace ShootEmUp
             base.Draw(gameTime);
         }
         
-        public void UpdateViewPos()
-        {
-            /*player.myPos = player.myPos - viewPos;
-            foreach (Bullet b in bulletList) { b.myPos += oldViewPos; b.myPos -= viewPos; }
-            foreach (StandardEnemy e in standardEnemyList) { e.myPos += oldViewPos; e.myPos -= viewPos; }*/
-        }
+
     }
 }
