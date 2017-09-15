@@ -38,6 +38,7 @@ namespace ShootEmUp
         {
             // TODO: Add your initialization logic here
             bulletList = new List<Bullet>();
+            standardEnemyList = new List<StandardEnemy>();
             base.Initialize();
         }
 
@@ -52,9 +53,9 @@ namespace ShootEmUp
 
             playerSprite = Content.Load<Texture2D>("sprites/player");
             bulletSprite = Content.Load<Texture2D>("sprites/bullet");
-            standardEnemySprite = Content.Load<Texture2D>("sprites/enemy");
+            standardEnemySprite = Content.Load<Texture2D>("sprites/player");
             player = new Player(playerSprite);
-            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(200, 200), 0)); // Just for testing the enemy
+            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f)); // Just for testing the enemy
             // TODO: use this.Content to load your game content here
         }
 
@@ -103,6 +104,7 @@ namespace ShootEmUp
             GraphicsDevice.Clear(Color.DimGray); // Background
 
             foreach (Bullet b in bulletList) b.Draw(spriteBatch);
+            foreach (StandardEnemy e in standardEnemyList) e.Draw(spriteBatch);
             // TODO: Add your drawing code here
 
             player.Draw(spriteBatch); // Draw player
