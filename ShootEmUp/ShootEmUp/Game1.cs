@@ -101,6 +101,9 @@ namespace ShootEmUp
             mousePosition.X = mouse.X;
             mousePosition.Y = mouse.Y;
 
+            //viewPos = viewPos + (player.myPos - new Vector2(windowWidth/2-32, windowHeight/2-32) - viewPos)* 0.05f; // This is only based on the position of the player
+            viewPos = viewPos + (((player.myPos - new Vector2(windowWidth - 64, windowHeight - 64) + mousePosition + viewPos) / 2) - viewPos) * 0.05f; // This is based on both mouse and player
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -120,9 +123,8 @@ namespace ShootEmUp
                 standardEnemyList[i].Update();
             }
 
-            player.Update(method, envorimentList, bulletList, bulletSprite, mousePosition, viewPos);
-            //viewPos = viewPos + (player.myPos - new Vector2(windowWidth/2-32, windowHeight/2-32) - viewPos)* 0.05f; // This is only based on the position of the player
-            viewPos = viewPos + (((player.myPos - new Vector2(windowWidth - 64, windowHeight - 64) + mousePosition + viewPos) / 2) - viewPos) * 0.05f; // This is based on both mouse and player
+            player.Update(method, envorimentList, bulletList, bulletSprite, mouse, viewPos);
+            
             base.Update(gameTime);
         }
 

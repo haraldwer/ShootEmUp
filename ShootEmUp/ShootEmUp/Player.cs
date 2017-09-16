@@ -29,7 +29,7 @@ namespace ShootEmUp
 
 
         // Update-event
-        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, List<Bullet> aBulletList, Texture2D aBulletSprite, Vector2 aViewPos, Vector2 aMousePosition)
+        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, List<Bullet> aBulletList, Texture2D aBulletSprite, MouseState aMouse, Vector2 aViewPos)
         {
             mySpeed = (mySpeed / 10) * 9; // Friction (makes it slow down)
 
@@ -57,7 +57,7 @@ namespace ShootEmUp
             #endregion
 
             #region Direction
-            myDir = (float)Math.Atan2(aMousePosition.Y+aViewPos.Y-myPos.Y, aMousePosition.X+aViewPos.X-myPos.X); // Calculate what direction player is facing (this is used for example when drawing)
+            myDir = (float)Math.Atan2(aMouse.Y+aViewPos.Y-myPos.Y, aMouse.X+aViewPos.X-myPos.X); // Calculate what direction player is facing (this is used for example when drawing)
             if (myDir == 0 && mySpeed == new Vector2(0, 0))
             {
                 myDir = -1.57f;
@@ -69,9 +69,9 @@ namespace ShootEmUp
             {
                 myBulletTimer -= 1; // Count down
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Space)) // If key is pressed and bulletTimer is below 0
+            else if (aMouse.LeftButton == ButtonState.Pressed) // If key is pressed and bulletTimer is below 0
             {
-                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir)); // Add bullet to bulletList
+                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir, aMethod)); // Add bullet to bulletList
                 myBulletTimer = 10; // Reset bulletTimer
             }
             #endregion

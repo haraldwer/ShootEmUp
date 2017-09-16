@@ -30,5 +30,15 @@ namespace ShootEmUp
             int tempDis = Convert.ToInt32(Math.Abs(Math.Sqrt(Math.Pow(Convert.ToDouble(aPos.X - anotherPos.X), 2) + Math.Pow(Convert.ToDouble(aPos.Y - anotherPos.Y), 2))));
             return tempDis;
         }
+
+        public float PointDirection(Vector2 aPos, Vector2 anotherPos)
+        {
+            return (float)Math.Atan2(anotherPos.Y - aPos.Y, anotherPos.X - aPos.X);
+        }
+
+        public Vector2 SpeedFromDir(float aDir)
+        {
+            return new Vector2((float)Math.Cos(aDir), (float)Math.Sin(aDir));
+        }
     }
 }

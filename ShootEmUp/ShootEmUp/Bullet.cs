@@ -18,12 +18,13 @@ namespace ShootEmUp
         public bool myAlive = true;
 
         // Constructor
-        public Bullet(Texture2D aSprite, Vector2 aPos, float aDir)
+        public Bullet(Texture2D aSprite, Vector2 aPos, float aDir, GeneralMethods aMethod)
         {
             mySprite = aSprite;
             myPos = aPos;
             myDir = aDir;
-            mySpeed = new Vector2((float)Math.Cos(myDir), (float)Math.Sin(myDir)) * 10;
+            mySpeed = aMethod.SpeedFromDir(myDir) * 15;
+            myPos += mySpeed;
         }
 
         // Update-event
