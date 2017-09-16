@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
-    <Compile Include="Collisions.cs" />
+    <Compile Include="GeneralMethods.cs" />
     <Compile Include="EnvironmentObjects.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Player.cs" />

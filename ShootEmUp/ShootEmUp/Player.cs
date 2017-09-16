@@ -23,63 +23,36 @@ namespace ShootEmUp
         public Player(Texture2D aSprite)
         {
             mySprite = aSprite;
-            myPos = new Vector2(75, 75);
+            myPos = new Vector2(0, 0);
             mySpeed = new Vector2(0, 0);
         }
 
 
         // Update-event
-        public void Update(List<Bullet> aBulletList, Texture2D aBulletSprite, Vector2 aViewPos, Vector2 aMousePosition)
+        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, List<Bullet> aBulletList, Texture2D aBulletSprite, Vector2 aViewPos, Vector2 aMousePosition)
         {
             mySpeed = (mySpeed / 10) * 9; // Friction (makes it slow down)
 
-            #region Controls
+            #region Controls and movement
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                mySpeed.Y -= myMovementSpeed;
+                //mySpeed.Y -= myMovementSpeed;
+                mySpeed.Y -= ((Math.Pow(mySpeed.X, 2) + Math.Pow(mySpeed.Y - myMovementSpeed, 2)) > Math.Pow(myMaxSpeed, 2) ? 0 : myMovementSpeed);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                mySpeed.Y += myMovementSpeed;
+                //mySpeed.Y += myMovementSpeed;
+                mySpeed.Y += ((Math.Pow(mySpeed.X, 2) + Math.Pow(mySpeed.Y + myMovementSpeed, 2)) > Math.Pow(myMaxSpeed, 2) ? 0 : myMovementSpeed);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                mySpeed.X -= myMovementSpeed;
+                //mySpeed.X -= myMovementSpeed;
+                mySpeed.X -= ((Math.Pow(mySpeed.X - myMovementSpeed, 2) + Math.Pow(mySpeed.Y, 2)) > Math.Pow(myMaxSpeed, 2) ? 0 : myMovementSpeed);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                mySpeed.X += myMovementSpeed;
-            }
-            #endregion
-
-            #region Limiting speed
-            if (mySpeed.X > myMaxSpeed)
-            {
-                mySpeed.X = myMaxSpeed;
-            }
-            if (mySpeed.X < -myMaxSpeed)
-            {
-                mySpeed.X = -myMaxSpeed;
-            }
-            if (mySpeed.Y > myMaxSpeed)
-            {
-                mySpeed.Y = myMaxSpeed;
-            }
-            if (mySpeed.Y < -myMaxSpeed)
-            {
-                mySpeed.Y = -myMaxSpeed;
-            }
-            #endregion
-
-            #region Diagonal movement
-            // A poor attempt at making natural movement
-            float tempDiagonalSpeed = (float)Math.Sqrt(Convert.ToDouble(Math.Pow(myMaxSpeed, 2) / 2));
-            if ((Math.Abs(mySpeed.X) + Math.Abs(mySpeed.Y)) > tempDiagonalSpeed)
-            {
-                if (mySpeed.X > tempDiagonalSpeed){mySpeed.X = tempDiagonalSpeed;}
-                if (mySpeed.X < -tempDiagonalSpeed) { mySpeed.X = -tempDiagonalSpeed; }
-                if(mySpeed.Y > tempDiagonalSpeed) {mySpeed.Y = tempDiagonalSpeed;}
-                if (mySpeed.Y < -tempDiagonalSpeed) { mySpeed.Y = -tempDiagonalSpeed; }
+                //mySpeed.X += myMovementSpeed;
+                mySpeed.X += ((Math.Pow(mySpeed.X + myMovementSpeed, 2) + Math.Pow(mySpeed.Y, 2)) > Math.Pow(myMaxSpeed, 2) ? 0 : myMovementSpeed);
             }
             #endregion
 
@@ -90,8 +63,6 @@ namespace ShootEmUp
                 myDir = -1.57f;
             }
             #endregion
-
-            myPos += mySpeed; // Add speed to position
 
             #region Shooting
             if (myBulletTimer > 0) // If bulletTimer is above 0
@@ -105,7 +76,21 @@ namespace ShootEmUp
             }
             #endregion
 
-            
+            #region Collisions
+            foreach(EnvironmentObject w in anEnviromentList)
+            {
+                if (aMethod.PointCollision(new Vector2(myPos.X + mySpeed.X + 16, myPos.Y + 16), 32, w.myPos, 64))
+                {
+                    mySpeed.X = 0;
+                }
+                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + mySpeed.Y + 16), 32, w.myPos, 64))
+                {
+                    mySpeed.Y = 0;
+                }
+            }
+            #endregion
+
+            myPos += mySpeed; // Add speed to position
         }
 
         // Draw-event

@@ -13,52 +13,27 @@ namespace ShootEmUp
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
         Texture2D playerSprite;
         Texture2D bulletSprite; // I assume we are going to add more kinds of bullet later
         Texture2D crosshair;
         Texture2D standardEnemySprite;
         Texture2D wallSprite;
+
         Player player;
+        GeneralMethods method;
         List<Bullet> bulletList;
         List<StandardEnemy> standardEnemyList;
         List<EnvironmentObject> envorimentList;
+
         public Vector2 viewPos = new Vector2(100, 100);
         Vector2 oldViewPos = new Vector2(100, 100);
         int windowHeight = 700;
         int windowWidth = 700;
         public Vector2 mousePosition;
+
         int[,,] map = new int[1, 4, 3];
-
-        #region map
-        private void CreateMap(int aLevel)
-        {
-            int tempNumberOfObjects = 4;
-            map[0, 0, 0] = 0; // object type
-            map[0, 0, 1] = 2; // x pos
-            map[0, 0, 2] = 2; // y pos
-
-            map[0, 1, 0] = 0;
-            map[0, 1, 1] = 2;
-            map[0, 1, 2] = 3;
-
-            map[0, 2, 0] = 0;
-            map[0, 2, 1] = 2;
-            map[0, 2, 2] = 4;
-
-            map[0, 3, 0] = 0;
-            map[0, 3, 1] = 3;
-            map[0, 3, 2] = 4;
-
-            for (int i = 0; i < tempNumberOfObjects; i++)
-            {
-                envorimentList.Add(new EnvironmentObject(map[0,i, 0], new Vector2(map[0, i, 1], map[0,i, 2]), wallSprite));
-            }
-        }
-
-        #endregion
-
-
-
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -82,6 +57,7 @@ namespace ShootEmUp
             bulletList = new List<Bullet>();
             standardEnemyList = new List<StandardEnemy>();
             envorimentList = new List<EnvironmentObject>();
+            method = new GeneralMethods();
             base.Initialize();
         }
 
@@ -132,7 +108,11 @@ namespace ShootEmUp
             
             for (int i = 0; i < bulletList.Count; i++)
             {
-                bulletList[i].Update();
+                bulletList[i].Update(method, envorimentList, player);
+                if (!bulletList[i].myAlive)
+                {
+                    bulletList.RemoveAt(i);
+                }
             }
 
             for (int i = 0; i < standardEnemyList.Count; i++)
@@ -140,10 +120,9 @@ namespace ShootEmUp
                 standardEnemyList[i].Update();
             }
 
-            player.Update(bulletList, bulletSprite, mousePosition, viewPos);
-            //oldViewPos = viewPos;
-            viewPos = viewPos + (player.myPos - new Vector2(windowWidth/2-32, windowHeight/2-32) - viewPos) * 0.05f;
-            //+ mousePosition)/2
+            player.Update(method, envorimentList, bulletList, bulletSprite, mousePosition, viewPos);
+            //viewPos = viewPos + (player.myPos - new Vector2(windowWidth/2-32, windowHeight/2-32) - viewPos)* 0.05f; // This is only based on the position of the player
+            viewPos = viewPos + (((player.myPos - new Vector2(windowWidth - 64, windowHeight - 64) + mousePosition + viewPos) / 2) - viewPos) * 0.05f; // This is based on both mouse and player
             base.Update(gameTime);
         }
 
@@ -169,7 +148,32 @@ namespace ShootEmUp
 
             base.Draw(gameTime);
         }
-        
 
+        #region map
+        private void CreateMap(int aLevel)
+        {
+            int tempNumberOfObjects = 4;
+            map[0, 0, 0] = 0; // object type
+            map[0, 0, 1] = 2; // x pos
+            map[0, 0, 2] = 2; // y pos
+
+            map[0, 1, 0] = 0;
+            map[0, 1, 1] = 2;
+            map[0, 1, 2] = 3;
+
+            map[0, 2, 0] = 0;
+            map[0, 2, 1] = 2;
+            map[0, 2, 2] = 4;
+
+            map[0, 3, 0] = 0;
+            map[0, 3, 1] = 3;
+            map[0, 3, 2] = 4;
+
+            for (int i = 0; i < tempNumberOfObjects; i++)
+            {
+                envorimentList.Add(new EnvironmentObject(map[0, i, 0], new Vector2(map[0, i, 1], map[0, i, 2]), wallSprite));
+            }
+        }
+        #endregion
     }
 }

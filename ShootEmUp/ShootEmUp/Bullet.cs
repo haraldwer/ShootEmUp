@@ -15,6 +15,7 @@ namespace ShootEmUp
         public Vector2 myPos;
         Vector2 mySpeed;
         float myDir = 0f;
+        public bool myAlive = true;
 
         // Constructor
         public Bullet(Texture2D aSprite, Vector2 aPos, float aDir)
@@ -26,9 +27,19 @@ namespace ShootEmUp
         }
 
         // Update-event
-        public void Update()
+        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, Player aPlayer)
         {
             myPos += mySpeed;
+
+            #region Collisions
+            foreach (EnvironmentObject w in anEnviromentList)
+            {
+                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, w.myPos, 64))
+                {
+                    myAlive = false;
+                }
+            }
+            #endregion
         }
 
         // Draw-event
