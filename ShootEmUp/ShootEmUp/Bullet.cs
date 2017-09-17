@@ -14,8 +14,9 @@ namespace ShootEmUp
         Texture2D mySprite;
         public Vector2 myPos;
         Vector2 mySpeed;
-        float myDir = 0f;
+        public float myDir = 0f;
         public bool myAlive = true;
+        public string myHit = "";
 
         // Constructor
         public Bullet(Texture2D aSprite, Vector2 aPos, float aDir, GeneralMethods aMethod)
@@ -37,6 +38,7 @@ namespace ShootEmUp
             {
                 if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, w.myPos, 64))
                 {
+                    myHit = "wood";
                     myAlive = false;
                 }
             }

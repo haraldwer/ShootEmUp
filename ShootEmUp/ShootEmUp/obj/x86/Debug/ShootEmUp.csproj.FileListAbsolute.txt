@@ -124,3 +124,4 @@ C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\
 C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\obj\x86\Debug\ShootEmUp.csprojResolveAssemblyReference.cache
 C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\obj\x86\Debug\ShootEmUp.exe
 C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\obj\x86\Debug\ShootEmUp.pdb
+C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\WoodParticle.xnb
