@@ -20,6 +20,7 @@ namespace ShootEmUp
         Texture2D standardEnemySprite;
         Texture2D wallSprite;
         Texture2D woodParticleSprite;
+        Texture2D bloodSprite;
 
         Player player;
         GeneralMethods method;
@@ -27,6 +28,7 @@ namespace ShootEmUp
         List<StandardEnemy> standardEnemyList;
         List<EnvironmentObject> envorimentList;
         List<WoodParticle> woodParticleList;
+        List<BloodParticle> bloodParticleList;
 
         public Vector2 viewPos = new Vector2(100, 100);
         Vector2 oldViewPos = new Vector2(100, 100);
@@ -61,6 +63,7 @@ namespace ShootEmUp
             standardEnemyList = new List<StandardEnemy>();
             envorimentList = new List<EnvironmentObject>();
             woodParticleList = new List<WoodParticle>();
+            bloodParticleList = new List<BloodParticle>();
             method = new GeneralMethods();
             base.Initialize();
         }
@@ -80,6 +83,7 @@ namespace ShootEmUp
             crosshair = Content.Load<Texture2D>("sprites/crosshair");
             wallSprite = Content.Load<Texture2D>("sprites/Wall");
             woodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
+            bloodSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             player = new Player(playerSprite);
             standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f)); // Just for testing the enemy
             CreateMap(0);
@@ -124,7 +128,7 @@ namespace ShootEmUp
                         case "wood":
                             for (int j = 0; j < 5; j++)
                             {
-                                woodParticleList.Add(new WoodParticle(bulletList[i].myPos + new Vector2(32, 32), woodParticleSprite, bulletList[i].myDir-1.57f-(rnd.Next(314)/100), method, rnd));
+                                woodParticleList.Add(new WoodParticle(bulletList[i].myPos + new Vector2(32, 32), woodParticleSprite, bulletList[i].myDir-1.57f-(float)(rnd.Next(314)/100f), method, rnd));
                             }
                             break;
                     }
@@ -138,6 +142,15 @@ namespace ShootEmUp
                 if (!woodParticleList[i].myAlive)
                 {
                     woodParticleList.RemoveAt(i);
+                }
+            }
+
+            for (int i = 0; i < bloodParticleList.Count; i++)
+            {
+                bloodParticleList[i].Update();
+                if (!bloodParticleList[i].myAlive)
+                {
+                    bloodParticleList.RemoveAt(i);
                 }
             }
 
@@ -158,11 +171,11 @@ namespace ShootEmUp
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DimGray); // Background
-
-            foreach (Bullet b in bulletList) b.Draw(spriteBatch, viewPos);
-            foreach (StandardEnemy e in standardEnemyList) e.Draw(spriteBatch, viewPos);
-            foreach (WoodParticle p in woodParticleList) p.Draw(spriteBatch, viewPos);
-            foreach (EnvironmentObject w in envorimentList) w.Draw(spriteBatch, viewPos);
+            foreach (WoodParticle i in woodParticleList) i.Draw(spriteBatch, viewPos);
+            foreach (BloodParticle i in bloodParticleList) i.Draw(spriteBatch, viewPos);
+            foreach (Bullet i in bulletList) i.Draw(spriteBatch, viewPos);
+            foreach (StandardEnemy i in standardEnemyList) i.Draw(spriteBatch, viewPos);
+            foreach (EnvironmentObject i in envorimentList) i.Draw(spriteBatch, viewPos);
             // TODO: Add your drawing code here
 
             player.Draw(spriteBatch, viewPos); // Draw player
