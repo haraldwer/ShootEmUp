@@ -14,17 +14,19 @@ namespace ShootEmUp
         Texture2D mySprite;
         public Vector2 myPos;
         Vector2 mySpeed;
+        int myVelocity; //The speed with which the bullet will move forward with
         public float myDir = 0f;
         public bool myAlive = true;
         public string myHit = "";
 
         // Constructor
-        public Bullet(Texture2D aSprite, Vector2 aPos, float aDir, GeneralMethods aMethod)
+        public Bullet(Texture2D aSprite, Vector2 aPos, float aDir, GeneralMethods aMethod, int aVelocity)
         {
             mySprite = aSprite;
             myPos = aPos;
             myDir = aDir;
-            mySpeed = aMethod.SpeedFromDir(myDir) * 15;
+            myVelocity = aVelocity;
+            mySpeed = aMethod.SpeedFromDir(myDir) * myVelocity;
             myPos += mySpeed;
         }
 

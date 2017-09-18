@@ -26,7 +26,7 @@ namespace ShootEmUp
         GeneralMethods method;
         List<Bullet> bulletList;
         List<StandardEnemy> standardEnemyList;
-        List<EnvironmentObject> envorimentList;
+        List<EnvironmentObject> environmentList;
         List<WoodParticle> woodParticleList;
         List<BloodParticle> bloodParticleList;
 
@@ -61,7 +61,7 @@ namespace ShootEmUp
             // TODO: Add your initialization logic here
             bulletList = new List<Bullet>();
             standardEnemyList = new List<StandardEnemy>();
-            envorimentList = new List<EnvironmentObject>();
+            environmentList = new List<EnvironmentObject>();
             woodParticleList = new List<WoodParticle>();
             bloodParticleList = new List<BloodParticle>();
             method = new GeneralMethods();
@@ -85,7 +85,7 @@ namespace ShootEmUp
             woodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             bloodSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             player = new Player(playerSprite);
-            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f)); // Just for testing the enemy
+            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f, bulletSprite, 10)); // Just for testing the enemy
             CreateMap(0);
             // TODO: use this.Content to load your game content here
         }
@@ -120,7 +120,7 @@ namespace ShootEmUp
             
             for (int i = 0; i < bulletList.Count; i++)
             {
-                bulletList[i].Update(method, envorimentList, player);
+                bulletList[i].Update(method, environmentList, player);
                 if (!bulletList[i].myAlive)
                 {
                     switch (bulletList[i].myHit)
@@ -156,10 +156,10 @@ namespace ShootEmUp
 
             for (int i = 0; i < standardEnemyList.Count; i++)
             {
-                standardEnemyList[i].Update(player);
+                standardEnemyList[i].Update(player, environmentList, method, bulletList);
             }
 
-            player.Update(method, envorimentList, bulletList, bulletSprite, mouse, viewPos);
+            player.Update(method, environmentList, bulletList, bulletSprite, mouse, viewPos);
             
             base.Update(gameTime);
         }
@@ -175,7 +175,7 @@ namespace ShootEmUp
             foreach (BloodParticle i in bloodParticleList) i.Draw(spriteBatch, viewPos);
             foreach (Bullet i in bulletList) i.Draw(spriteBatch, viewPos);
             foreach (StandardEnemy i in standardEnemyList) i.Draw(spriteBatch, viewPos);
-            foreach (EnvironmentObject i in envorimentList) i.Draw(spriteBatch, viewPos);
+            foreach (EnvironmentObject i in environmentList) i.Draw(spriteBatch, viewPos);
             // TODO: Add your drawing code here
 
             player.Draw(spriteBatch, viewPos); // Draw player
@@ -210,7 +210,7 @@ namespace ShootEmUp
 
             for (int i = 0; i < tempNumberOfObjects; i++)
             {
-                envorimentList.Add(new EnvironmentObject(map[0, i, 0], new Vector2(map[0, i, 1], map[0, i, 2]), wallSprite));
+                environmentList.Add(new EnvironmentObject(map[0, i, 0], new Vector2(map[0, i, 1], map[0, i, 2]), wallSprite));
             }
         }
         #endregion
