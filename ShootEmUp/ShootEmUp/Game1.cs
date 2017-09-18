@@ -156,7 +156,7 @@ namespace ShootEmUp
 
             for (int i = 0; i < standardEnemyList.Count; i++)
             {
-                standardEnemyList[i].Update();
+                standardEnemyList[i].Update(player);
             }
 
             player.Update(method, envorimentList, bulletList, bulletSprite, mouse, viewPos);
