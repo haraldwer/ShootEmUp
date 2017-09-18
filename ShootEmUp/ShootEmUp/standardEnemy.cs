@@ -20,6 +20,9 @@ namespace ShootEmUp
         int myBulletTimer = 0;
         int myMagSize;
         int myShotsFired = 0;
+        float myCooldownTime;
+        GeneralMethods myGeneralMethods = new GeneralMethods();
+        bool myCanMove = true;
 
         // Constructor
         public StandardEnemy(Texture2D aSprite, Vector2 aPos, float aDir, Texture2D aBulletSprite, int aMagSize)
@@ -33,38 +36,48 @@ namespace ShootEmUp
         }
 
         // Update-event
-        public void Update(Player aPlayer, List<EnvironmentObject> anEnvironmentList, GeneralMethods someGeneralMethods, List<Bullet> aBulletList)
+        public void Update(Player aPlayer, List<EnvironmentObject> anEnvironmentList, List<Bullet> aBulletList)
         {
             myBulletTimer++;
-            myDir = someGeneralMethods.PointDirection(myPos, aPlayer.myPos); //Update direction to point towards the player
+            myDir = myGeneralMethods.PointDirection(myPos, aPlayer.myPos); //Update direction to point towards the player
             mySpeed = new Vector2((float)Math.Cos(myDir), (float)Math.Sin(myDir)); //Update the speed
             #region Collisions
             foreach (EnvironmentObject w in anEnvironmentList)
             {
-                if (someGeneralMethods.PointCollision(new Vector2(myPos.X + mySpeed.X + 16, myPos.Y + 16), 32, w.myPos, 64)) //If theres a collision on the left or right side (depending on direction)
+                if (myGeneralMethods.PointCollision(new Vector2(myPos.X + mySpeed.X + 16, myPos.Y + 16), 32, w.myPos, 64)) //If theres a collision on the left or right side (depending on direction)
                 {
                     mySpeed.X = 0; //Set the left/right speed to 0;
                 }
-                if (someGeneralMethods.PointCollision(new Vector2(myPos.X + 16, myPos.Y + mySpeed.Y + 16), 32, w.myPos, 64)) //If theres a collision on the upper or bottom side (depending on direction)
+                if (myGeneralMethods.PointCollision(new Vector2(myPos.X + 16, myPos.Y + mySpeed.Y + 16), 32, w.myPos, 64)) //If theres a collision on the upper or bottom side (depending on direction)
                 {
                     mySpeed.Y = 0; //Set the upp/down speed to 0;
                 }
             }
             #endregion
-            if (someGeneralMethods.PointDistance(myPos, aPlayer.myPos) > 200) //If the player is within a range of 200
+            if (myGeneralMethods.PointDistance(myPos, aPlayer.myPos) > 200 && myCanMove) //If the player is within a range of 200
             {
                 myPos += mySpeed; //Move towards the player
             }
 
             #region Weapon
-            if(myShotsFired >= myMagSize) //Reload Timer
+            if(myGeneralMethods.PointDistance(myPos, aPlayer.myPos) <= 200 || !myCanMove) //If the enemy is near the player, or the player has been near the enemy, shoot faster
+            {
+                myCooldownTime = 0.2f;
+                myCanMove = false;
+            }
+            else
+            {
+                myCooldownTime = 0.75f;
+            }
+            if (myShotsFired >= myMagSize) //Reload Timer
             {
                 myBulletTimer = 60*-3; //Set the weapon to cool down for an extra 3 seconds
                 myShotsFired = 0; //Reset the number of shots fired
+                myCanMove = true;
             }
-            if(myBulletTimer >= 60*0.75) //Weapon Cooldown
+            if(myBulletTimer >= 60*myCooldownTime) //Weapon Cooldown
             {
-                aBulletList.Add(new Bullet(myBulletSprite, myPos, myDir, someGeneralMethods, 10)); //Create a new bullet
+                aBulletList.Add(new Bullet(myBulletSprite, myPos, myDir, myGeneralMethods, 10)); //Create a new bullet
                 myBulletTimer = 0; //Reset the weapon cooldown
                 myShotsFired++; //Reset the reload timer
             }
