@@ -15,6 +15,7 @@ namespace ShootEmUp
         public Vector2 myPos;
         Vector2 mySpeed;
         float myDir = 0f;
+        Random myRNG = new Random();
         GeneralMethods myGeneralMethods = new GeneralMethods();
 
         // Constructor
@@ -29,9 +30,11 @@ namespace ShootEmUp
         // Update-event
         public void Update(Player aPlayer)
         {
-            if(myGeneralMethods.PointDistance(myPos, aPlayer.myPos) > 50)
+            myDir = myGeneralMethods.PointDirection(myPos, aPlayer.myPos); //Update direction to point towards the player
+            mySpeed = new Vector2((float)Math.Cos(myDir), (float)Math.Sin(myDir)); //Update the speed
+            if (myGeneralMethods.PointDistance(myPos, aPlayer.myPos) > 200) //If the player is within a range of 200
             {
-                myDir = myGeneralMethods.PointDirection(myPos, aPlayer.myPos);
+                myPos += mySpeed; //Move towards the player
             }
         }
 

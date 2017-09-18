@@ -79,7 +79,7 @@ namespace ShootEmUp
 
             playerSprite = Content.Load<Texture2D>("sprites/Player");
             bulletSprite = Content.Load<Texture2D>("sprites/bullet");
-            standardEnemySprite = Content.Load<Texture2D>("sprites/Player");
+            standardEnemySprite = Content.Load<Texture2D>("sprites/Enemy");
             crosshair = Content.Load<Texture2D>("sprites/crosshair");
             wallSprite = Content.Load<Texture2D>("sprites/Wall");
             woodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
