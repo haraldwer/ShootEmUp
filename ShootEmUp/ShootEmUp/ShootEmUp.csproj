@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BloodParticle.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="EnemyBullet.cs" />
     <Compile Include="GeneralMethods.cs" />
     <Compile Include="EnvironmentObjects.cs" />
     <Compile Include="Game1.cs" />

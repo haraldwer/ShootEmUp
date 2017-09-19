@@ -18,6 +18,7 @@ namespace ShootEmUp
         float myMaxSpeed = 4f;
         int myBulletTimer = 0;
         float myDir = 0;
+        public int myHP = 10;
 
         // Constructor
         public Player(Texture2D aSprite)
@@ -90,6 +91,10 @@ namespace ShootEmUp
             }
             #endregion
 
+            if(myHP <= 0)
+            {
+                Environment.Exit(0);
+            }
             myPos += mySpeed; // Add speed to position
         }
 
