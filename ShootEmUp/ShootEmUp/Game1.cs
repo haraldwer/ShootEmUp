@@ -30,6 +30,7 @@ namespace ShootEmUp
         List<EnvironmentObject> environmentList;
         List<WoodParticle> woodParticleList;
         List<BloodParticle> bloodParticleList;
+        List<MenuButton> menuButtonList;
 
         public Vector2 viewPos = new Vector2(100, 100);
         Vector2 oldViewPos = new Vector2(100, 100);
@@ -37,6 +38,10 @@ namespace ShootEmUp
         int windowWidth = 700;
         public Vector2 mousePosition;
         Random rnd = new Random();
+
+        string gameState = "game";
+
+        string[] menuOptions = new string[2];
 
         int[,,] map = new int[1, 4, 3];
         
@@ -58,6 +63,11 @@ namespace ShootEmUp
             graphics.PreferredBackBufferWidth = windowWidth;        // WindowWidth
             graphics.PreferredBackBufferHeight = windowHeight;      // WindowHeight
             graphics.ApplyChanges();
+
+            menuOptions[0] = "Start game";
+            menuOptions[1] = "Exit game";
+
+            menuButtonList = new List<MenuButton>();
 
             // TODO: Add your initialization logic here
             bulletList = new List<Bullet>();
@@ -88,6 +98,10 @@ namespace ShootEmUp
             bloodSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             player = new Player(playerSprite);
             standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f, bulletSprite, 10)); // Just for testing the enemy
+            for (int i = 0; i < menuOptions.Length; i++)
+            {
+                menuButtonList.Add(new MenuButton(menuOptions[i], i, wallSprite, new Vector2(windowWidth / 2, windowHeight / 2), 100));
+            }
             CreateMap(0);
             // TODO: use this.Content to load your game content here
         }
@@ -112,65 +126,94 @@ namespace ShootEmUp
             mousePosition.X = mouse.X;
             mousePosition.Y = mouse.Y;
 
-            //viewPos = viewPos + (player.myPos - new Vector2(windowWidth/2-32, windowHeight/2-32) - viewPos)* 0.05f; // This is only based on the position of the player
-            viewPos = viewPos + (((player.myPos - new Vector2(windowWidth - 20, windowHeight - 20) + mousePosition + viewPos) / 2) - viewPos) * 0.05f; // This is based on both mouse and player
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-            
-            for (int i = 0; i < bulletList.Count; i++)
+            switch (gameState)
             {
-                bulletList[i].Update(method, environmentList, player);
-                if (!bulletList[i].myAlive)
-                {
-                    switch (bulletList[i].myHit)
+                case "menu":
+                    for (int i = 0; i < menuButtonList.Count; i++)
                     {
-                        case "wood":
-                            for (int j = 0; j < 5; j++)
+                        menuButtonList[i].Update(mouse, method);
+                        if (menuButtonList[i].myClicked)
+                        {
+                            switch(menuButtonList[i].myOption)
                             {
-                                woodParticleList.Add(new WoodParticle(bulletList[i].myPos + new Vector2(32, 32), woodParticleSprite, bulletList[i].myDir-1.57f-(float)(rnd.Next(314)/100f), method, rnd));
+                                case 0:
+                                    gameState = "game";
+                                    break;
+
+                                case 1:
+                                    Exit();
+                                    break;
                             }
-                            break;
+                        }
                     }
-                    bulletList.RemoveAt(i);
-                }
-            }
-            for (int i = 0; i < enemyBulletList.Count; i++)
-            {
-                enemyBulletList[i].Update(method, player);
-                if (!enemyBulletList[i].myAlive)
-                {
-                    enemyBulletList.RemoveAt(i);
-                }
+                    break;
+
+                case "game":
+                    //viewPos = viewPos + (player.myPos - new Vector2(windowWidth/2-32, windowHeight/2-32) - viewPos)* 0.05f; // This is only based on the position of the player
+                    viewPos = viewPos + (((player.myPos - new Vector2(windowWidth - 20, windowHeight - 20) + mousePosition + viewPos) / 2) - viewPos) * 0.05f; // This is based on both mouse and player
+
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        Exit();
+
+                    // TODO: Add your update logic here
+
+                    for (int i = 0; i < bulletList.Count; i++)
+                    {
+                        bulletList[i].Update(method, environmentList, player);
+                        if (!bulletList[i].myAlive)
+                        {
+                            switch (bulletList[i].myHit)
+                            {
+                                case "wood":
+                                    for (int j = 0; j < 5; j++)
+                                    {
+                                        woodParticleList.Add(new WoodParticle(bulletList[i].myPos + new Vector2(32, 32), woodParticleSprite, bulletList[i].myDir - 1.57f - (float)(rnd.Next(314) / 100f), method, rnd));
+                                    }
+                                    break;
+                            }
+                            bulletList.RemoveAt(i);
+                        }
+                    }
+                    for (int i = 0; i < enemyBulletList.Count; i++)
+                    {
+                        enemyBulletList[i].Update(method, player);
+                        if (!enemyBulletList[i].myAlive)
+                        {
+                            enemyBulletList.RemoveAt(i);
+                        }
+                    }
+
+                    for (int i = 0; i < woodParticleList.Count; i++)
+                    {
+                        woodParticleList[i].Update();
+                        if (!woodParticleList[i].myAlive)
+                        {
+                            woodParticleList.RemoveAt(i);
+                        }
+                    }
+
+                    for (int i = 0; i < bloodParticleList.Count; i++)
+                    {
+                        bloodParticleList[i].Update();
+                        if (!bloodParticleList[i].myAlive)
+                        {
+                            bloodParticleList.RemoveAt(i);
+                        }
+                    }
+
+                    for (int i = 0; i < standardEnemyList.Count; i++)
+                    {
+                        standardEnemyList[i].Update(player, environmentList, enemyBulletList);
+                    }
+
+                    player.Update(method, environmentList, bulletList, bulletSprite, mouse, viewPos);
+                    break;
+
+                default:
+                    gameState = "menu";
+                    break;
             }
 
-            for (int i = 0; i < woodParticleList.Count; i++)
-            {
-                woodParticleList[i].Update();
-                if (!woodParticleList[i].myAlive)
-                {
-                    woodParticleList.RemoveAt(i);
-                }
-            }
-
-            for (int i = 0; i < bloodParticleList.Count; i++)
-            {
-                bloodParticleList[i].Update();
-                if (!bloodParticleList[i].myAlive)
-                {
-                    bloodParticleList.RemoveAt(i);
-                }
-            }
-
-            for (int i = 0; i < standardEnemyList.Count; i++)
-            {
-                standardEnemyList[i].Update(player, environmentList, enemyBulletList);
-            }
-
-            player.Update(method, environmentList, bulletList, bulletSprite, mouse, viewPos);
-            
             base.Update(gameTime);
         }
 
@@ -181,21 +224,30 @@ namespace ShootEmUp
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DimGray); // Background
-            foreach (WoodParticle i in woodParticleList) i.Draw(spriteBatch, viewPos);
-            foreach (BloodParticle i in bloodParticleList) i.Draw(spriteBatch, viewPos);
-            foreach (Bullet i in bulletList) i.Draw(spriteBatch, viewPos);
-            foreach (EnemyBullet i in enemyBulletList) i.Draw(spriteBatch, viewPos);
-            foreach (StandardEnemy i in standardEnemyList) i.Draw(spriteBatch, viewPos);
-            foreach (EnvironmentObject i in environmentList) i.Draw(spriteBatch, viewPos);
-            // TODO: Add your drawing code here
+            switch (gameState)
+            {
+                case "menu":
+                    foreach (MenuButton i in menuButtonList) i.Draw(spriteBatch);
+                    break;
+                case "game":
+                    foreach (WoodParticle i in woodParticleList) i.Draw(spriteBatch, viewPos);
+                    foreach (BloodParticle i in bloodParticleList) i.Draw(spriteBatch, viewPos);
+                    foreach (Bullet i in bulletList) i.Draw(spriteBatch, viewPos);
+                    foreach (EnemyBullet i in enemyBulletList) i.Draw(spriteBatch, viewPos);
+                    foreach (StandardEnemy i in standardEnemyList) i.Draw(spriteBatch, viewPos);
+                    foreach (EnvironmentObject i in environmentList) i.Draw(spriteBatch, viewPos);
+                    // TODO: Add your drawing code here
 
-            player.Draw(spriteBatch, viewPos); // Draw player
+                    player.Draw(spriteBatch, viewPos); // Draw player
 
-            // Drawing crosshair
+                    // Drawing crosshair
+
+                    break;
+            }
+
             spriteBatch.Begin();
             spriteBatch.Draw(crosshair, mousePosition, Color.White);
             spriteBatch.End();
-
             base.Draw(gameTime);
         }
 

@@ -93,7 +93,7 @@ namespace ShootEmUp
 
             if(myHP <= 0)
             {
-                Environment.Exit(0);
+                //Environment.Exit(0);
             }
             myPos += mySpeed; // Add speed to position
         }
