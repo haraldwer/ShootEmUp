@@ -39,7 +39,7 @@ namespace ShootEmUp
         }
 
         // Update-event
-        public void Update(Player aPlayer, List<EnvironmentObject> anEnvironmentList, List<EnemyBullet> anEnemyBulletList)
+        public void Update(Player aPlayer, List<EnvironmentObject> anEnvironmentList, List<Bullet> anEnemyBulletList)
         {
             if(myHP <= 0)
             {
@@ -61,14 +61,11 @@ namespace ShootEmUp
                 }
             }
             #endregion
-            if (myGeneralMethods.PointDistance(myPos, aPlayer.myPos) > 200 && myCanMove) //If the player is within a range of 200 and the player has not approached
-            {
-                myPos += mySpeed; //Move towards the player
-            }
 
             #region Weapon
             if(myGeneralMethods.PointDistance(myPos, aPlayer.myPos) < 500)
             {
+                myPos += mySpeed; //Move towards the player
                 if (myGeneralMethods.PointDistance(myPos, aPlayer.myPos) <= 200 || !myCanMove) //If the enemy is near the player, or the player has been near the enemy, shoot faster
                 {
                     myCooldownTime = 0.05f;
@@ -86,7 +83,7 @@ namespace ShootEmUp
                 }
                 if (myBulletTimer >= 60 * myCooldownTime) //Weapon Cooldown
                 {
-                    anEnemyBulletList.Add(new EnemyBullet(myBulletSprite, myPos, myDir, myGeneralMethods, 10)); //Create a new bullet
+                    anEnemyBulletList.Add(new Bullet(myBulletSprite, myPos, myDir, myGeneralMethods, 10, Bullet.Type.enemyBullet)); //Create a new bullet
                     myBulletTimer = 0; //Reset the weapon cooldown
                     myShotsFired++; //Reset the reload timer
                 }

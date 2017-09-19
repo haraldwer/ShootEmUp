@@ -25,7 +25,6 @@ namespace ShootEmUp
         Player player;
         GeneralMethods method;
         List<Bullet> bulletList;
-        List<EnemyBullet> enemyBulletList;
         List<StandardEnemy> standardEnemyList;
         List<EnvironmentObject> environmentList;
         List<WoodParticle> woodParticleList;
@@ -71,7 +70,6 @@ namespace ShootEmUp
 
             // TODO: Add your initialization logic here
             bulletList = new List<Bullet>();
-            enemyBulletList = new List<EnemyBullet>();
             standardEnemyList = new List<StandardEnemy>();
             environmentList = new List<EnvironmentObject>();
             woodParticleList = new List<WoodParticle>();
@@ -97,7 +95,7 @@ namespace ShootEmUp
             woodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             bloodSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             player = new Player(playerSprite);
-            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f, bulletSprite, 10, 5)); // Just for testing the enemy
+            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(500, 500), 0f, bulletSprite, 10, 5)); // Just for testing the enemy
             for (int i = 0; i < menuOptions.Length; i++)
             {
                 menuButtonList.Add(new MenuButton(menuOptions[i], i, wallSprite, new Vector2(windowWidth / 2, windowHeight / 2), 100));
@@ -177,14 +175,6 @@ namespace ShootEmUp
                             bulletList.RemoveAt(i);
                         }
                     }
-                    for (int i = 0; i < enemyBulletList.Count; i++)
-                    {
-                        enemyBulletList[i].Update(method, player);
-                        if (!enemyBulletList[i].myAlive)
-                        {
-                            enemyBulletList.RemoveAt(i);
-                        }
-                    }
 
                     for (int i = 0; i < woodParticleList.Count; i++)
                     {
@@ -206,14 +196,14 @@ namespace ShootEmUp
 
                     for (int i = 0; i < standardEnemyList.Count; i++)
                     {
-                        standardEnemyList[i].Update(player, environmentList, enemyBulletList);
+                        standardEnemyList[i].Update(player, environmentList, bulletList);
                         if (!standardEnemyList[i].myIsAlive)
                         {
                             standardEnemyList.RemoveAt(i);
                         }
                     }
 
-                    player.Update(method, environmentList, bulletList, bulletSprite, mouse, viewPos);
+                    player.Update(method, environmentList, bulletList, bulletSprite, mouse, viewPos, standardEnemyList);
                     if (!player.myAlive)
                     {
                         gameState = "menu";
@@ -244,7 +234,6 @@ namespace ShootEmUp
                     foreach (WoodParticle i in woodParticleList) i.Draw(spriteBatch, viewPos);
                     foreach (BloodParticle i in bloodParticleList) i.Draw(spriteBatch, viewPos);
                     foreach (Bullet i in bulletList) i.Draw(spriteBatch, viewPos);
-                    foreach (EnemyBullet i in enemyBulletList) i.Draw(spriteBatch, viewPos);
                     foreach (StandardEnemy i in standardEnemyList) i.Draw(spriteBatch, viewPos);
                     foreach (EnvironmentObject i in environmentList) i.Draw(spriteBatch, viewPos);
                     // TODO: Add your drawing code here

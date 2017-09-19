@@ -20,6 +20,7 @@ namespace ShootEmUp
         float myDir = 0;
         public int myHP = 10;
         public bool myAlive = true;
+        int myDamageCooldown = 0;
 
         // Constructor
         public Player(Texture2D aSprite)
@@ -31,8 +32,9 @@ namespace ShootEmUp
 
 
         // Update-event
-        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, List<Bullet> aBulletList, Texture2D aBulletSprite, MouseState aMouse, Vector2 aViewPos)
+        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, List<Bullet> aBulletList, Texture2D aBulletSprite, MouseState aMouse, Vector2 aViewPos, List<StandardEnemy> aStandardEnemyList)
         {
+            myDamageCooldown++;
             mySpeed = (mySpeed / 10) * 9; // Friction (makes it slow down)
 
             #region Controls and movement
@@ -90,11 +92,35 @@ namespace ShootEmUp
                     mySpeed.Y = 0;
                 }
             }
+            foreach(StandardEnemy s in aStandardEnemyList)
+            {
+                if (aMethod.PointCollision(new Vector2(myPos.X + mySpeed.X + 16, myPos.Y + 16), 32, s.myPos, 64))
+                {
+                    mySpeed.X = 0;
+                    if(myDamageCooldown >= 60*2)
+                    {
+                        myHP -= 1;
+                        s.myHP -= 1;
+                        myDamageCooldown = 0;
+                    }
+                }
+                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + mySpeed.Y + 16), 32, s.myPos, 64))
+                {
+                    mySpeed.Y = 0;
+                    if (myDamageCooldown >= 60 * 2)
+                    {
+                        myHP -= 1;
+                        s.myHP -= 1;
+                        myDamageCooldown = 0;
+                    }
+                }
+            }
             #endregion
 
-            if(myHP <= 0)
+            if(myHP <= 0 && myDamageCooldown >= 60*0.5)
             {
                 myAlive = false;
+                myDamageCooldown = 0;
             }
             myPos += mySpeed; // Add speed to position
         }
