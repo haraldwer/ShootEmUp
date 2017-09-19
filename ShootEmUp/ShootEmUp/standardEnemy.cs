@@ -60,26 +60,29 @@ namespace ShootEmUp
             }
 
             #region Weapon
-            if(myGeneralMethods.PointDistance(myPos, aPlayer.myPos) <= 200 || !myCanMove) //If the enemy is near the player, or the player has been near the enemy, shoot faster
+            if(myGeneralMethods.PointDistance(myPos, aPlayer.myPos) < 500)
             {
-                myCooldownTime = 0.05f;
-                myCanMove = false;
-            }
-            else
-            {
-                myCooldownTime = 0.75f;
-            }
-            if (myShotsFired >= myMagSize) //Reload Timer
-            {
-                myBulletTimer = 60*-3; //Set the weapon to cool down for an extra 3 seconds
-                myShotsFired = 0; //Reset the number of shots fired
-                myCanMove = true;
-            }
-            if(myBulletTimer >= 60*myCooldownTime) //Weapon Cooldown
-            {
-                anEnemyBulletList.Add(new EnemyBullet(myBulletSprite, myPos, myDir, myGeneralMethods, 10)); //Create a new bullet
-                myBulletTimer = 0; //Reset the weapon cooldown
-                myShotsFired++; //Reset the reload timer
+                if (myGeneralMethods.PointDistance(myPos, aPlayer.myPos) <= 200 || !myCanMove) //If the enemy is near the player, or the player has been near the enemy, shoot faster
+                {
+                    myCooldownTime = 0.05f;
+                    myCanMove = false;
+                }
+                else
+                {
+                    myCooldownTime = 0.75f;
+                }
+                if (myShotsFired >= myMagSize) //Reload Timer
+                {
+                    myBulletTimer = 60 * -3; //Set the weapon to cool down for an extra 3 seconds
+                    myShotsFired = 0; //Reset the number of shots fired
+                    myCanMove = true;
+                }
+                if (myBulletTimer >= 60 * myCooldownTime) //Weapon Cooldown
+                {
+                    anEnemyBulletList.Add(new EnemyBullet(myBulletSprite, myPos, myDir, myGeneralMethods, 10)); //Create a new bullet
+                    myBulletTimer = 0; //Reset the weapon cooldown
+                    myShotsFired++; //Reset the reload timer
+                }
             }
             #endregion
         }
