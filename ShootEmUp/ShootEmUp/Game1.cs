@@ -39,7 +39,7 @@ namespace ShootEmUp
         public Vector2 mousePosition;
         Random rnd = new Random();
 
-        string gameState = "game";
+        string gameState = "menu";
 
         string[] menuOptions = new string[2];
 
@@ -137,6 +137,9 @@ namespace ShootEmUp
                             switch(menuButtonList[i].myOption)
                             {
                                 case 0:
+                                    player.myHP = 10;
+                                    player.myAlive = true;
+                                    player.myPos = new Vector2(0, 0);
                                     gameState = "game";
                                     break;
 
@@ -207,6 +210,10 @@ namespace ShootEmUp
                     }
 
                     player.Update(method, environmentList, bulletList, bulletSprite, mouse, viewPos);
+                    if (!player.myAlive)
+                    {
+                        gameState = "menu";
+                    }
                     break;
 
                 default:

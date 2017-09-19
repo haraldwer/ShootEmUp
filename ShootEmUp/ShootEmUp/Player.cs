@@ -19,6 +19,7 @@ namespace ShootEmUp
         int myBulletTimer = 0;
         float myDir = 0;
         public int myHP = 10;
+        public bool myAlive = true;
 
         // Constructor
         public Player(Texture2D aSprite)
@@ -93,7 +94,7 @@ namespace ShootEmUp
 
             if(myHP <= 0)
             {
-                //Environment.Exit(0);
+                myAlive = false;
             }
             myPos += mySpeed; // Add speed to position
         }
