@@ -73,7 +73,7 @@ namespace ShootEmUp
             }
             else if (aMouse.LeftButton == ButtonState.Pressed) // If key is pressed and bulletTimer is below 0
             {
-                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir, aMethod, 15)); // Add bullet to bulletList
+                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir, aMethod, 15, Bullet.Type.standardBullet)); // Add bullet to bulletList
                 myBulletTimer = 10; // Reset bulletTimer
             }
             #endregion

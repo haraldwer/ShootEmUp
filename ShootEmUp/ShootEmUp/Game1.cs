@@ -97,7 +97,7 @@ namespace ShootEmUp
             woodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             bloodSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             player = new Player(playerSprite);
-            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f, bulletSprite, 10)); // Just for testing the enemy
+            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(50, 50), 0f, bulletSprite, 10, 5)); // Just for testing the enemy
             for (int i = 0; i < menuOptions.Length; i++)
             {
                 menuButtonList.Add(new MenuButton(menuOptions[i], i, wallSprite, new Vector2(windowWidth / 2, windowHeight / 2), 100));
@@ -162,7 +162,7 @@ namespace ShootEmUp
 
                     for (int i = 0; i < bulletList.Count; i++)
                     {
-                        bulletList[i].Update(method, environmentList, player);
+                        bulletList[i].Update(method, environmentList, player, standardEnemyList);
                         if (!bulletList[i].myAlive)
                         {
                             switch (bulletList[i].myHit)
@@ -207,6 +207,10 @@ namespace ShootEmUp
                     for (int i = 0; i < standardEnemyList.Count; i++)
                     {
                         standardEnemyList[i].Update(player, environmentList, enemyBulletList);
+                        if (!standardEnemyList[i].myIsAlive)
+                        {
+                            standardEnemyList.RemoveAt(i);
+                        }
                     }
 
                     player.Update(method, environmentList, bulletList, bulletSprite, mouse, viewPos);

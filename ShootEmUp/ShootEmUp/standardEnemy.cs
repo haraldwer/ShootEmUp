@@ -23,9 +23,11 @@ namespace ShootEmUp
         float myCooldownTime;
         GeneralMethods myGeneralMethods = new GeneralMethods();
         bool myCanMove = true;
+        public int myHP;
+        public bool myIsAlive = true;
 
         // Constructor
-        public StandardEnemy(Texture2D aSprite, Vector2 aPos, float aDir, Texture2D aBulletSprite, int aMagSize)
+        public StandardEnemy(Texture2D aSprite, Vector2 aPos, float aDir, Texture2D aBulletSprite, int aMagSize, int someHP)
         {
             mySprite = aSprite;
             myPos = aPos;
@@ -33,11 +35,16 @@ namespace ShootEmUp
             mySpeed = new Vector2((float)Math.Cos(myDir), (float)Math.Sin(myDir));
             myBulletSprite = aBulletSprite;
             myMagSize = aMagSize;
+            myHP = someHP;
         }
 
         // Update-event
         public void Update(Player aPlayer, List<EnvironmentObject> anEnvironmentList, List<EnemyBullet> anEnemyBulletList)
         {
+            if(myHP <= 0)
+            {
+                myIsAlive = false;
+            }
             myBulletTimer++;
             myDir = myGeneralMethods.PointDirection(myPos, aPlayer.myPos); //Update direction to point towards the player
             mySpeed = new Vector2((float)Math.Cos(myDir), (float)Math.Sin(myDir)); //Update the speed

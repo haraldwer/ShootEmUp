@@ -35,11 +35,6 @@ namespace ShootEmUp
         {
             myPos += mySpeed;
             #region Collisionss
-                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, aPlayer.myPos, 64))
-                {
-                    aPlayer.myHP -= 1;
-                    myAlive = false;
-                }
             #endregion
         }
 

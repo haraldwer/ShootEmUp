@@ -18,9 +18,14 @@ namespace ShootEmUp
         public float myDir = 0f;
         public bool myAlive = true;
         public string myHit = "";
+        public enum Type
+        {
+            standardBullet, enemyBullet
+        }
+        Type myType = new Type();
 
         // Constructor
-        public Bullet(Texture2D aSprite, Vector2 aPos, float aDir, GeneralMethods aMethod, int aVelocity)
+        public Bullet(Texture2D aSprite, Vector2 aPos, float aDir, GeneralMethods aMethod, int aVelocity, Type aType)
         {
             mySprite = aSprite;
             myPos = aPos;
@@ -28,22 +33,46 @@ namespace ShootEmUp
             myVelocity = aVelocity;
             mySpeed = aMethod.SpeedFromDir(myDir) * myVelocity;
             myPos += mySpeed;
+            myType = aType;
         }
 
         // Update-event
-        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, Player aPlayer)
+        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, Player aPlayer, List<StandardEnemy> aStandardEnemyList)
         {
             myPos += mySpeed;
 
             #region Collisions
-            foreach (EnvironmentObject w in anEnviromentList)
+            #region Standard Bullet
+            if (myType == Type.standardBullet)
             {
-                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, w.myPos, 64))
+                foreach (EnvironmentObject w in anEnviromentList)
                 {
-                    myHit = "wood";
+                    if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, w.myPos, 64))
+                    {
+                        myHit = "wood";
+                        myAlive = false;
+                    }
+                }
+                foreach(StandardEnemy s in aStandardEnemyList)
+                {
+                    if(aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, s.myPos, 64))
+                    {
+                        s.myHP -= 1;
+                        myAlive = false;
+                    }
+                }
+            }
+            #endregion
+            #region Enemy Bullet
+            else if (myType == Type.enemyBullet)
+            {
+                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, aPlayer.myPos, 64))
+                {
+                    aPlayer.myHP -= 1;
                     myAlive = false;
                 }
             }
+            #endregion
             #endregion
         }
 
