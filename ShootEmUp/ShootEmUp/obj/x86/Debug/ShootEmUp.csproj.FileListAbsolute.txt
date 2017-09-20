@@ -155,3 +155,4 @@ C:\Users\daniel.karde\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86
 C:\Users\daniel.karde\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\obj\x86\Debug\ShootEmUp.csprojResolveAssemblyReference.cache
 C:\Users\daniel.karde\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Enemy.xnb
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Enemy.xnb
+C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\BloodParticle.xnb
