@@ -43,14 +43,6 @@ namespace ShootEmUp
 
             #region Collisions
             #region Standard Bullet
-            foreach (EnvironmentObject w in anEnviromentList)
-            {
-                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, w.myPos, 64))
-                {
-                    myHit = "wood";
-                    myAlive = false;
-                }
-            }
             if (myType == Type.standardBullet)
             {
                 foreach(StandardEnemy s in aStandardEnemyList)

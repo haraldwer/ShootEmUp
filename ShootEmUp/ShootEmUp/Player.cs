@@ -28,7 +28,7 @@ namespace ShootEmUp
         public Player(Texture2D aSprite, Vector2 aSpawnPos)
         {
             mySprite = aSprite;
-            myPos = new Vector2(1000, 1000);
+            myPos = new Vector2(100, 100);
             mySpeed = new Vector2(0, 0);
             mySpawnPos = aSpawnPos;
         }
