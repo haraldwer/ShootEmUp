@@ -14,32 +14,36 @@ namespace ShootEmUp
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D playerSprite;
-        Texture2D bulletSprite; // I assume we are going to add more kinds of bullet later
-        Texture2D crosshair;
-        Texture2D standardEnemySprite;
-        Texture2D wallSprite;
-        Texture2D woodParticleSprite;
-        Texture2D bloodSprite;
+        Texture2D myPlayerSprite;
+        Texture2D myBulletSprite; // I assume we are going to add more kinds of bullet later
+        Texture2D myCrosshair;
+        Texture2D myStandardEnemySprite;
+        Texture2D myWallSprite;
+        Texture2D myWoodParticleSprite;
+        Texture2D myBloodSprite;
 
-        Player player;
-        GeneralMethods method;
-        List<Bullet> bulletList;
-        List<StandardEnemy> standardEnemyList;
-        List<EnvironmentObject> environmentList;
-        List<WoodParticle> woodParticleList;
-        List<BloodParticle> bloodParticleList;
-        List<MenuButton> menuButtonList;
+        Player myPlayer;
+        GeneralMethods myMethod;
+        List<Bullet> myBulletList;
+        List<StandardEnemy> myStandardEnemyList;
+        List<EnvironmentObject> myEnvironmentList;
+        List<WoodParticle> myWoodParticleList;
+        List<BloodParticle> myBloodParticleList;
+        List<MenuButton> myMenuButtonList;
 
-        public Vector2 viewPos = new Vector2(100, 100);
-        Vector2 oldViewPos = new Vector2(100, 100);
-        int windowHeight = 700;
-        int windowWidth = 700;
-        public Vector2 mousePosition;
-        Random rnd = new Random();
+        public Vector2 myViewPos = new Vector2(100, 100);
+        Vector2 myOldViewPos = new Vector2(100, 100);
+        int myWindowHeight = 700;
+        int myWindowWidth = 700;
+        public Vector2 myMousePosition;
+        Random myRNG = new Random();
 
 
-        string gameState = "menu";
+        enum GameState
+        {
+            Game, Menu
+        }
+        GameState myGameState = new GameState();
 
         string[] menuOptions = new string[2];
 
@@ -59,23 +63,25 @@ namespace ShootEmUp
         /// </summary>
         protected override void Initialize()
         {
+            
             // Setting the window-size
-            graphics.PreferredBackBufferWidth = windowWidth;        // WindowWidth
-            graphics.PreferredBackBufferHeight = windowHeight;      // WindowHeight
+            graphics.PreferredBackBufferWidth = myWindowWidth;        // WindowWidth
+            graphics.PreferredBackBufferHeight = myWindowHeight;      // WindowHeight
             graphics.ApplyChanges();
 
             menuOptions[0] = "Start game";
             menuOptions[1] = "Exit game";
+            myGameState = GameState.Game;
 
-            menuButtonList = new List<MenuButton>();
+            myMenuButtonList = new List<MenuButton>();
 
             // TODO: Add your initialization logic here
-            bulletList = new List<Bullet>();
-            standardEnemyList = new List<StandardEnemy>();
-            environmentList = new List<EnvironmentObject>();
-            woodParticleList = new List<WoodParticle>();
-            bloodParticleList = new List<BloodParticle>();
-            method = new GeneralMethods();
+            myBulletList = new List<Bullet>();
+            myStandardEnemyList = new List<StandardEnemy>();
+            myEnvironmentList = new List<EnvironmentObject>();
+            myWoodParticleList = new List<WoodParticle>();
+            myBloodParticleList = new List<BloodParticle>();
+            myMethod = new GeneralMethods();
             base.Initialize();
         }
 
@@ -88,18 +94,18 @@ namespace ShootEmUp
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            playerSprite = Content.Load<Texture2D>("sprites/Player");
-            bulletSprite = Content.Load<Texture2D>("sprites/bullet");
-            standardEnemySprite = Content.Load<Texture2D>("sprites/Enemy");
-            crosshair = Content.Load<Texture2D>("sprites/crosshair");
-            wallSprite = Content.Load<Texture2D>("sprites/Wall");
-            woodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
-            bloodSprite = Content.Load<Texture2D>("sprites/WoodParticle");
-            player = new Player(playerSprite, new Vector2(50, 50));
-            standardEnemyList.Add(new StandardEnemy(standardEnemySprite, new Vector2(500, 500), 0f, bulletSprite, 10, 5)); // Just for testing the enemy
+            myPlayerSprite = Content.Load<Texture2D>("sprites/Player");
+            myBulletSprite = Content.Load<Texture2D>("sprites/bullet");
+            myStandardEnemySprite = Content.Load<Texture2D>("sprites/Enemy");
+            myCrosshair = Content.Load<Texture2D>("sprites/crosshair");
+            myWallSprite = Content.Load<Texture2D>("sprites/Wall");
+            myWoodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
+            myBloodSprite = Content.Load<Texture2D>("sprites/WoodParticle");
+            myPlayer = new Player(myPlayerSprite, new Vector2(50, 50));
+            myStandardEnemyList.Add(new StandardEnemy(myStandardEnemySprite, new Vector2(500, 500), 0f, myBulletSprite, 10, 5)); // Just for testing the enemy
             for (int i = 0; i < menuOptions.Length; i++)
             {
-                menuButtonList.Add(new MenuButton(menuOptions[i], i, wallSprite, new Vector2(windowWidth / 2, windowHeight / 2), 100));
+                myMenuButtonList.Add(new MenuButton(menuOptions[i], i, myWallSprite, new Vector2(myWindowWidth / 2, myWindowHeight / 2), 100));
             }
             CreateMap(0);
             // TODO: use this.Content to load your game content here
@@ -122,24 +128,24 @@ namespace ShootEmUp
         protected override void Update(GameTime gameTime)
         {
             MouseState mouse = Mouse.GetState();
-            mousePosition.X = mouse.X;
-            mousePosition.Y = mouse.Y;
+            myMousePosition.X = mouse.X;
+            myMousePosition.Y = mouse.Y;
 
-            switch (gameState)
+            switch (myGameState)
             {
-                case "menu":
-                    for (int i = 0; i < menuButtonList.Count; i++)
+                case GameState.Menu:
+                    for (int i = 0; i < myMenuButtonList.Count; i++)
                     {
-                        menuButtonList[i].Update(mouse, method);
-                        if (menuButtonList[i].myClicked)
+                        myMenuButtonList[i].Update(mouse, myMethod);
+                        if (myMenuButtonList[i].myClicked)
                         {
-                            switch(menuButtonList[i].myOption)
+                            switch(myMenuButtonList[i].myOption)
                             {
                                 case 0:
-                                    player.myHP = 10;
-                                    player.myAlive = true;
-                                    player.myPos = player.mySpawnPos;
-                                    gameState = "game";
+                                    myPlayer.myHP = 10;
+                                    myPlayer.myAlive = true;
+                                    myPlayer.myPos = myPlayer.mySpawnPos;
+                                    myGameState = GameState.Game;
                                     break;
 
                                 case 1:
@@ -150,69 +156,69 @@ namespace ShootEmUp
                     }
                     break;
 
-                case "game":
+                case GameState.Game:
                     //viewPos = viewPos + (player.myPos - new Vector2(windowWidth/2-32, windowHeight/2-32) - viewPos)* 0.05f; // This is only based on the position of the player
-                    viewPos = viewPos + (((player.myPos - new Vector2(windowWidth - 20, windowHeight - 20) + mousePosition + viewPos) / 2) - viewPos) * 0.05f; // This is based on both mouse and player
+                    myViewPos = myViewPos + (((myPlayer.myPos - new Vector2(myWindowWidth - 20, myWindowHeight - 20) + myMousePosition + myViewPos) / 2) - myViewPos) * 0.05f; // This is based on both mouse and player
 
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         Exit();
 
                     // TODO: Add your update logic here
 
-                    for (int i = 0; i < bulletList.Count; i++)
+                    for (int i = 0; i < myBulletList.Count; i++)
                     {
-                        bulletList[i].Update(method, environmentList, player, standardEnemyList);
-                        if (!bulletList[i].myAlive)
+                        myBulletList[i].Update(myMethod, myEnvironmentList, myPlayer, myStandardEnemyList);
+                        if (!myBulletList[i].myAlive)
                         {
-                            switch (bulletList[i].myHit)
+                            switch (myBulletList[i].myHit)
                             {
                                 case "wood":
                                     for (int j = 0; j < 5; j++)
                                     {
-                                        woodParticleList.Add(new WoodParticle(bulletList[i].myPos + new Vector2(32, 32), woodParticleSprite, bulletList[i].myDir - 1.57f - (float)(rnd.Next(314) / 100f), method, rnd));
+                                        myWoodParticleList.Add(new WoodParticle(myBulletList[i].myPos + new Vector2(32, 32), myWoodParticleSprite, myBulletList[i].myDir - 1.57f - (float)(myRNG.Next(314) / 100f), myMethod, myRNG));
                                     }
                                     break;
                             }
-                            bulletList.RemoveAt(i);
+                            myBulletList.RemoveAt(i);
                         }
                     }
 
-                    for (int i = 0; i < woodParticleList.Count; i++)
+                    for (int i = 0; i < myWoodParticleList.Count; i++)
                     {
-                        woodParticleList[i].Update();
-                        if (!woodParticleList[i].myAlive)
+                        myWoodParticleList[i].Update();
+                        if (!myWoodParticleList[i].myAlive)
                         {
-                            woodParticleList.RemoveAt(i);
+                            myWoodParticleList.RemoveAt(i);
                         }
                     }
 
-                    for (int i = 0; i < bloodParticleList.Count; i++)
+                    for (int i = 0; i < myBloodParticleList.Count; i++)
                     {
-                        bloodParticleList[i].Update();
-                        if (!bloodParticleList[i].myAlive)
+                        myBloodParticleList[i].Update();
+                        if (!myBloodParticleList[i].myAlive)
                         {
-                            bloodParticleList.RemoveAt(i);
+                            myBloodParticleList.RemoveAt(i);
                         }
                     }
 
-                    for (int i = 0; i < standardEnemyList.Count; i++)
+                    for (int i = 0; i < myStandardEnemyList.Count; i++)
                     {
-                        standardEnemyList[i].Update(player, environmentList, bulletList);
-                        if (!standardEnemyList[i].myIsAlive)
+                        myStandardEnemyList[i].Update(myPlayer, myEnvironmentList, myBulletList);
+                        if (!myStandardEnemyList[i].myIsAlive)
                         {
-                            standardEnemyList.RemoveAt(i);
+                            myStandardEnemyList.RemoveAt(i);
                         }
                     }
 
-                    player.Update(method, environmentList, bulletList, bulletSprite, mouse, viewPos, standardEnemyList);
-                    if (!player.myAlive)
+                    myPlayer.Update(myMethod, myEnvironmentList, myBulletList, myBulletSprite, mouse, myViewPos, myStandardEnemyList);
+                    if (!myPlayer.myAlive)
                     {
-                        gameState = "menu";
+                        myGameState = GameState.Menu;
                     }
                     break;
 
                 default:
-                    gameState = "menu";
+                    myGameState = GameState.Menu;
                     break;
             }
 
@@ -226,20 +232,20 @@ namespace ShootEmUp
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DimGray); // Background
-            switch (gameState)
+            switch (myGameState)
             {
-                case "menu":
-                    foreach (MenuButton i in menuButtonList) i.Draw(spriteBatch);
+                case GameState.Menu:
+                    foreach (MenuButton i in myMenuButtonList) i.Draw(spriteBatch);
                     break;
-                case "game":
-                    foreach (WoodParticle i in woodParticleList) i.Draw(spriteBatch, viewPos);
-                    foreach (BloodParticle i in bloodParticleList) i.Draw(spriteBatch, viewPos);
-                    foreach (Bullet i in bulletList) i.Draw(spriteBatch, viewPos);
-                    foreach (StandardEnemy i in standardEnemyList) i.Draw(spriteBatch, viewPos);
-                    foreach (EnvironmentObject i in environmentList) i.Draw(spriteBatch, viewPos);
+                case GameState.Game:
+                    foreach (WoodParticle i in myWoodParticleList) i.Draw(spriteBatch, myViewPos);
+                    foreach (BloodParticle i in myBloodParticleList) i.Draw(spriteBatch, myViewPos);
+                    foreach (Bullet i in myBulletList) i.Draw(spriteBatch, myViewPos);
+                    foreach (StandardEnemy i in myStandardEnemyList) i.Draw(spriteBatch, myViewPos);
+                    foreach (EnvironmentObject i in myEnvironmentList) i.Draw(spriteBatch, myViewPos);
                     // TODO: Add your drawing code here
 
-                    player.Draw(spriteBatch, viewPos); // Draw player
+                    myPlayer.Draw(spriteBatch, myViewPos); // Draw player
 
                     // Drawing crosshair
 
@@ -247,7 +253,7 @@ namespace ShootEmUp
             }
 
             spriteBatch.Begin();
-            spriteBatch.Draw(crosshair, mousePosition, Color.White);
+            spriteBatch.Draw(myCrosshair, myMousePosition, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -341,7 +347,7 @@ namespace ShootEmUp
 
             for (int i = 0; i < tempNumberOfObjects; i++)
             {
-                environmentList.Add(new EnvironmentObject(map[0, i, 0], new Vector2(map[0, i, 1], map[0, i, 2]), wallSprite));
+                myEnvironmentList.Add(new EnvironmentObject(map[0, i, 0], new Vector2(map[0, i, 1], map[0, i, 2]), myWallSprite));
             }
         }
         #endregion

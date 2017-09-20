@@ -68,7 +68,7 @@ namespace ShootEmUp
                 myPos += mySpeed; //Move towards the player
                 if (myGeneralMethods.PointDistance(myPos, aPlayer.myPos) <= 200 || !myCanMove) //If the enemy is near the player, or the player has been near the enemy, shoot faster
                 {
-                    myCooldownTime = 0.05f;
+                    myCooldownTime = 0.1f;
                     myCanMove = false;
                 }
                 else
