@@ -14,6 +14,7 @@ namespace ShootEmUp
         Texture2D mySprite;
         public Vector2 myPos;
         Vector2 mySpeed;
+        public Vector2 mySpawnPos;
         float myMovementSpeed = 0.7f;
         float myMaxSpeed = 4f;
         int myBulletTimer = 0;
@@ -22,12 +23,14 @@ namespace ShootEmUp
         public bool myAlive = true;
         int myDamageCooldown = 0;
 
+
         // Constructor
-        public Player(Texture2D aSprite)
+        public Player(Texture2D aSprite, Vector2 aSpawnPos)
         {
             mySprite = aSprite;
-            myPos = new Vector2(0, 0);
+            myPos = new Vector2(1000, 1000);
             mySpeed = new Vector2(0, 0);
+            mySpawnPos = aSpawnPos;
         }
 
 
