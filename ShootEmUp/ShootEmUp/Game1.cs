@@ -20,7 +20,7 @@ namespace ShootEmUp
         Texture2D myStandardEnemySprite;
         Texture2D myWallSprite;
         Texture2D myWoodParticleSprite;
-        Texture2D myBloodSprite;
+        Texture2D myBloodParticleSprite;
 
         Player myPlayer;
         GeneralMethods myMethod;
@@ -100,7 +100,7 @@ namespace ShootEmUp
             myCrosshair = Content.Load<Texture2D>("sprites/crosshair");
             myWallSprite = Content.Load<Texture2D>("sprites/Wall");
             myWoodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
-            myBloodSprite = Content.Load<Texture2D>("sprites/WoodParticle");
+            myBloodParticleSprite = Content.Load<Texture2D>("sprites/BloodParticle");
             myPlayer = new Player(myPlayerSprite, new Vector2(50, 50));
             myStandardEnemyList.Add(new StandardEnemy(myStandardEnemySprite, new Vector2(500, 500), 0f, myBulletSprite, 10, 5)); // Just for testing the enemy
             for (int i = 0; i < menuOptions.Length; i++)
@@ -176,6 +176,12 @@ namespace ShootEmUp
                                     for (int j = 0; j < 5; j++)
                                     {
                                         myWoodParticleList.Add(new WoodParticle(myBulletList[i].myPos + new Vector2(32, 32), myWoodParticleSprite, myBulletList[i].myDir - 1.57f - (float)(myRNG.Next(314) / 100f), myMethod, myRNG));
+                                    }
+                                    break;
+                                case "meat":
+                                    for (int j = 0; j < 5; j++)
+                                    {
+                                        myBloodParticleList.Add(new BloodParticle(myBulletList[i].myPos + new Vector2(32, 32)+myBulletList[i].mySpeed, myBloodParticleSprite, myBulletList[i].myDir - 1.57f - (float)(myRNG.Next(314) / 100f), myMethod, myRNG));
                                     }
                                     break;
                             }

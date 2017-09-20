@@ -13,7 +13,7 @@ namespace ShootEmUp
     {
         Texture2D mySprite;
         public Vector2 myPos;
-        Vector2 mySpeed;
+        public Vector2 mySpeed;
         int myVelocity; //The speed with which the bullet will move forward with
         public float myDir = 0f;
         public bool myAlive = true;
@@ -42,14 +42,24 @@ namespace ShootEmUp
             myPos += mySpeed;
 
             #region Collisions
+            foreach (EnvironmentObject w in anEnviromentList)
+            {
+                if (aMethod.PointCollision(new Vector2(myPos.X + 24, myPos.Y + 24), 16, w.myPos, 64))
+                {
+                    myHit = "wood";
+                    myAlive = false;
+                }
+            }
             #region Standard Bullet
+
             if (myType == Type.standardBullet)
             {
                 foreach(StandardEnemy s in aStandardEnemyList)
                 {
-                    if(aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, s.myPos, 64))
+                    if(aMethod.PointCollision(new Vector2(myPos.X + 24, myPos.Y + 24), 16, s.myPos, 64))
                     {
                         s.myHP -= 1;
+                        myHit = "meat";
                         myAlive = false;
                     }
                 }
@@ -58,9 +68,10 @@ namespace ShootEmUp
             #region Enemy Bullet
             else if (myType == Type.enemyBullet)
             {
-                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + 16), 32, aPlayer.myPos, 64))
+                if (aMethod.PointCollision(new Vector2(myPos.X + 24, myPos.Y + 24), 16, aPlayer.myPos, 64))
                 {
                     aPlayer.myHP -= 1;
+                    myHit = "meat";
                     myAlive = false;
                 }
             }
