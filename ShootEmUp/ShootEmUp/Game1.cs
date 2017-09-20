@@ -181,7 +181,7 @@ namespace ShootEmUp
                                 case "meat":
                                     for (int j = 0; j < 5; j++)
                                     {
-                                        myBloodParticleList.Add(new BloodParticle(myBulletList[i].myPos + new Vector2(32, 32), myBloodParticleSprite, myBulletList[i].myDir - 1.57f - (float)(myRNG.Next(314) / 100f), myMethod, myRNG));
+                                        myBloodParticleList.Add(new BloodParticle(myBulletList[i].myPos + new Vector2(32, 32)+myBulletList[i].mySpeed, myBloodParticleSprite, myBulletList[i].myDir - 1.57f - (float)(myRNG.Next(314) / 100f), myMethod, myRNG));
                                     }
                                     break;
                             }

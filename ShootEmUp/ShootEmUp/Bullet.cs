@@ -13,7 +13,7 @@ namespace ShootEmUp
     {
         Texture2D mySprite;
         public Vector2 myPos;
-        Vector2 mySpeed;
+        public Vector2 mySpeed;
         int myVelocity; //The speed with which the bullet will move forward with
         public float myDir = 0f;
         public bool myAlive = true;

@@ -17,6 +17,8 @@ namespace ShootEmUp
         Vector2 mySpeed;
         float mySpd;
         public bool myAlive = true;
+        int myTimer = 200;
+        float myAlpha = 1;
 
         // Constructor
         public BloodParticle(Vector2 aPos, Texture2D aSprite, float aDir, GeneralMethods aMethod, Random aRnd)
@@ -33,13 +35,26 @@ namespace ShootEmUp
         {
             mySpeed = mySpeed * 0.9f;
             myPos += mySpeed;
+
+            if (myTimer < 0)
+            {
+                myAlpha -= 0.01f;
+                if (myAlpha < 0)
+                {
+                    myAlive = false;
+                }
+            }
+            else
+            {
+                myTimer--;
+            }
         }
 
         // Draw-event
         public void Draw(SpriteBatch spriteBatch, Vector2 aViewPos)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(mySprite, myPos - aViewPos, null, Color.White, myDir + 1.57f, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mySprite, myPos - aViewPos, null, new Color(new Vector4(myAlpha, myAlpha, myAlpha, myAlpha)), myDir + 1.57f, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
     }
