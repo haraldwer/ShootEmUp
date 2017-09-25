@@ -14,6 +14,7 @@ namespace ShootEmUp
         Texture2D mySprite;
         public Vector2 myPos;
         float myDir;
+        float myImageAngle;
         Vector2 mySpeed;
         float mySpd;
         public bool myAlive = true;
@@ -28,6 +29,7 @@ namespace ShootEmUp
             myDir = aDir;
             mySpd = aRnd.Next(10);
             mySpeed = aMethod.SpeedFromDir(myDir) * mySpd;
+            myImageAngle = aRnd.Next(628) / 10;
         }
 
         // Update-event
@@ -53,9 +55,7 @@ namespace ShootEmUp
         // Draw-event
         public void Draw(SpriteBatch spriteBatch, Vector2 aViewPos)
         {
-            spriteBatch.Begin();
-            spriteBatch.Draw(mySprite, myPos - aViewPos, null, new Color(new Vector4(myAlpha, myAlpha, myAlpha, myAlpha)), myDir + 1.57f, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0f);
-            spriteBatch.End();
+            spriteBatch.Draw(mySprite, myPos - aViewPos, null, new Color(new Vector4(myAlpha, myAlpha, myAlpha, myAlpha)), myImageAngle, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0f);
         }
     }
 }

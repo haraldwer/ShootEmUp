@@ -21,6 +21,9 @@ namespace ShootEmUp
         Texture2D myWallSprite;
         Texture2D myWoodParticleSprite;
         Texture2D myBloodParticleSprite;
+        Texture2D myButtonSprite;
+
+        SpriteFont myGameFont;
 
         Player myPlayer;
         GeneralMethods myMethod;
@@ -71,7 +74,7 @@ namespace ShootEmUp
 
             menuOptions[0] = "Start game";
             menuOptions[1] = "Exit game";
-            myGameState = GameState.Game;
+            myGameState = GameState.Menu;
 
             myMenuButtonList = new List<MenuButton>();
 
@@ -93,7 +96,7 @@ namespace ShootEmUp
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            myGameFont = Content.Load<SpriteFont>("GameFont");
             myPlayerSprite = Content.Load<Texture2D>("sprites/Player");
             myBulletSprite = Content.Load<Texture2D>("sprites/bullet");
             myStandardEnemySprite = Content.Load<Texture2D>("sprites/Enemy");
@@ -101,11 +104,12 @@ namespace ShootEmUp
             myWallSprite = Content.Load<Texture2D>("sprites/Wall");
             myWoodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             myBloodParticleSprite = Content.Load<Texture2D>("sprites/BloodParticle");
+            myButtonSprite = Content.Load<Texture2D>("sprites/Button");
             myPlayer = new Player(myPlayerSprite, new Vector2(50, 50));
             myStandardEnemyList.Add(new StandardEnemy(myStandardEnemySprite, new Vector2(500, 500), 0f, myBulletSprite, 10, 5)); // Just for testing the enemy
             for (int i = 0; i < menuOptions.Length; i++)
             {
-                myMenuButtonList.Add(new MenuButton(menuOptions[i], i, myWallSprite, new Vector2(myWindowWidth / 2, myWindowHeight / 2), 100));
+                myMenuButtonList.Add(new MenuButton(myGameFont, menuOptions[i], i, myButtonSprite, new Vector2(myWindowWidth / 2, myWindowHeight / 2), 128));
             }
             CreateMap(0);
             // TODO: use this.Content to load your game content here
@@ -238,6 +242,7 @@ namespace ShootEmUp
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DimGray); // Background
+            spriteBatch.Begin();
             switch (myGameState)
             {
                 case GameState.Menu:
@@ -252,13 +257,14 @@ namespace ShootEmUp
                     // TODO: Add your drawing code here
 
                     myPlayer.Draw(spriteBatch, myViewPos); // Draw player
+                    spriteBatch.DrawString(myGameFont, Convert.ToString(myPlayer.myHP), new Vector2(100, 100), Color.White);
 
                     // Drawing crosshair
 
                     break;
             }
 
-            spriteBatch.Begin();
+            
             spriteBatch.Draw(myCrosshair, myMousePosition, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);

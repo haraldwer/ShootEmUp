@@ -82,9 +82,7 @@ namespace ShootEmUp
         // Draw-event
         public void Draw(SpriteBatch spriteBatch, Vector2 aViewPos)
         {
-            spriteBatch.Begin();
             spriteBatch.Draw(mySprite, myPos + new Vector2(32, 32)- aViewPos, null, Color.White, myDir + 1.57f, new Vector2(32, 32), 1.0f, SpriteEffects.None, 0f);
-            spriteBatch.End();
         }
 
     }

@@ -12,6 +12,7 @@ namespace ShootEmUp
     class MenuButton
     {
         Texture2D mySprite;
+        SpriteFont myFont;
         Vector2 myPos;
         string myText;
         public int myOption;
@@ -19,8 +20,9 @@ namespace ShootEmUp
         bool myClickBegin = false;
 
         // Constructor
-        public MenuButton(string aText, int anOption, Texture2D aSprite, Vector2 aPos, int aButtonWidth)
+        public MenuButton(SpriteFont aFont, string aText, int anOption, Texture2D aSprite, Vector2 aPos, int aButtonWidth)
         {
+            myFont = aFont;
             myOption = anOption;
             myText = aText;
             mySprite = aSprite;
@@ -33,7 +35,7 @@ namespace ShootEmUp
             myClicked = false;
             if (!myClickBegin)
             {
-                if (aMethod.PointCollision(myPos, 64, new Vector2(aMouseState.X + 32, aMouseState.Y + 32), 1))
+                if (aMethod.PointCollision(myPos, 128, new Vector2(aMouseState.X + 32, aMouseState.Y + 32), 1))
                 {
                     if (aMouseState.LeftButton == ButtonState.Pressed)
                     {
@@ -46,7 +48,7 @@ namespace ShootEmUp
                 if (aMouseState.LeftButton == ButtonState.Released)
                 {
                     myClickBegin = false;
-                    if (aMethod.PointCollision(myPos, 64, new Vector2(aMouseState.X + 32, aMouseState.Y + 32), 1))
+                    if (aMethod.PointCollision(myPos, 128, new Vector2(aMouseState.X + 32, aMouseState.Y + 32), 1))
                     {
                         myClicked = true;
                     }
@@ -57,9 +59,8 @@ namespace ShootEmUp
         // Draw-event
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
-            spriteBatch.Draw(mySprite, myPos, Color.White); 
-            spriteBatch.End();
+            spriteBatch.Draw(mySprite, myPos, Color.White);
+            spriteBatch.DrawString(myFont, myText, myPos + new Vector2(32, 48), Color.Black);
         }
     }
 }

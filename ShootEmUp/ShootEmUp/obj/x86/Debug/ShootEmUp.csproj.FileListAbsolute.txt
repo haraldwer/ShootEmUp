@@ -156,3 +156,5 @@ C:\Users\daniel.karde\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\obj\x86\Debug\S
 C:\Users\daniel.karde\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Enemy.xnb
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Enemy.xnb
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\BloodParticle.xnb
+C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Button.xnb
+C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\GameFont.xnb
