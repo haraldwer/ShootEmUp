@@ -22,11 +22,13 @@ namespace ShootEmUp
         public int myHP = 10;
         public bool myAlive = true;
         int myDamageCooldown = 0;
+        GeneralMethods myGeneralMetods;
 
 
         // Constructor
-        public Player(Texture2D aSprite, Vector2 aSpawnPos)
+        public Player(GeneralMethods aMethod,Texture2D aSprite, Vector2 aSpawnPos)
         {
+            myGeneralMetods = aMethod;
             mySprite = aSprite;
             myPos = new Vector2(100, 100);
             mySpeed = new Vector2(0, 0);
@@ -35,7 +37,7 @@ namespace ShootEmUp
 
 
         // Update-event
-        public void Update(GeneralMethods aMethod, List<EnvironmentObject> anEnviromentList, List<Bullet> aBulletList, Texture2D aBulletSprite, MouseState aMouse, Vector2 aViewPos, List<StandardEnemy> aStandardEnemyList)
+        public void Update(List<EnvironmentObject> anEnviromentList, List<Bullet> aBulletList, Texture2D aBulletSprite, MouseState aMouse, Vector2 aViewPos, List<StandardEnemy> aStandardEnemyList)
         {
             myDamageCooldown++;
             mySpeed = (mySpeed / 10) * 9; // Friction (makes it slow down)
@@ -78,7 +80,7 @@ namespace ShootEmUp
             }
             else if (aMouse.LeftButton == ButtonState.Pressed) // If key is pressed and bulletTimer is below 0
             {
-                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir, aMethod, 15, Bullet.Type.standardBullet)); // Add bullet to bulletList
+                aBulletList.Add(new Bullet(aBulletSprite, myPos, myDir, myGeneralMetods, 15, Bullet.Type.standardBullet)); // Add bullet to bulletList
                 myBulletTimer = 10; // Reset bulletTimer
             }
             #endregion
@@ -86,18 +88,18 @@ namespace ShootEmUp
             #region Collisions
             foreach(EnvironmentObject w in anEnviromentList)
             {
-                if (aMethod.PointCollision(new Vector2(myPos.X + mySpeed.X + 16, myPos.Y + 16), 32, w.myPos, 64))
+                if (myGeneralMetods.PointCollision(new Vector2(myPos.X + mySpeed.X + 16, myPos.Y + 16), 32, w.myPos, 64))
                 {
                     mySpeed.X = 0;
                 }
-                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + mySpeed.Y + 16), 32, w.myPos, 64))
+                if (myGeneralMetods.PointCollision(new Vector2(myPos.X + 16, myPos.Y + mySpeed.Y + 16), 32, w.myPos, 64))
                 {
                     mySpeed.Y = 0;
                 }
             }
             foreach(StandardEnemy s in aStandardEnemyList)
             {
-                if (aMethod.PointCollision(new Vector2(myPos.X + mySpeed.X + 16, myPos.Y + 16), 32, s.myPos, 64))
+                if (myGeneralMetods.PointCollision(new Vector2(myPos.X + mySpeed.X + 16, myPos.Y + 16), 32, s.myPos, 64))
                 {
                     mySpeed.X = 0;
                     if(myDamageCooldown >= 60*2)
@@ -107,7 +109,7 @@ namespace ShootEmUp
                         myDamageCooldown = 0;
                     }
                 }
-                if (aMethod.PointCollision(new Vector2(myPos.X + 16, myPos.Y + mySpeed.Y + 16), 32, s.myPos, 64))
+                if (myGeneralMetods.PointCollision(new Vector2(myPos.X + 16, myPos.Y + mySpeed.Y + 16), 32, s.myPos, 64))
                 {
                     mySpeed.Y = 0;
                     if (myDamageCooldown >= 60 * 2)

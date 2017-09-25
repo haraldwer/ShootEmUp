@@ -21,14 +21,15 @@ namespace ShootEmUp
         int myMagSize;
         int myShotsFired = 0;
         float myCooldownTime;
-        GeneralMethods myGeneralMethods = new GeneralMethods();
+        GeneralMethods myGeneralMethods;
         bool myCanMove = true;
         public int myHP;
         public bool myIsAlive = true;
 
         // Constructor
-        public StandardEnemy(Texture2D aSprite, Vector2 aPos, float aDir, Texture2D aBulletSprite, int aMagSize, int someHP)
+        public StandardEnemy(GeneralMethods aMethod, Texture2D aSprite, Vector2 aPos, float aDir, Texture2D aBulletSprite, int aMagSize, int someHP)
         {
+            myGeneralMethods = aMethod;
             mySprite = aSprite;
             myPos = aPos;
             myDir = aDir;

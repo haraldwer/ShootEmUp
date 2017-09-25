@@ -20,15 +20,17 @@ namespace ShootEmUp
         public bool myAlive = true;
         int myTimer = 200;
         float myAlpha = 1;
+        GeneralMethods myGeneralMethods;
 
         // Constructor
         public WoodParticle(Vector2 aPos, Texture2D aSprite, float aDir, GeneralMethods aMethod, Random aRnd)
         {
+            myGeneralMethods = aMethod;
             mySprite = aSprite;
             myPos = aPos;
             myDir = aDir;
             mySpd = aRnd.Next(10);
-            mySpeed = aMethod.SpeedFromDir(myDir) * mySpd;
+            mySpeed = myGeneralMethods.SpeedFromDir(myDir) * mySpd;
             myImageAngle = aRnd.Next(628) / 10;
         }
 

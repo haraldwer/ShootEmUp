@@ -18,10 +18,12 @@ namespace ShootEmUp
         public int myOption;
         public bool myClicked = false;
         bool myClickBegin = false;
+        GeneralMethods myGeneralMethods;
 
         // Constructor
-        public MenuButton(SpriteFont aFont, string aText, int anOption, Texture2D aSprite, Vector2 aPos, int aButtonWidth)
+        public MenuButton(SpriteFont aFont, string aText, int anOption, Texture2D aSprite, Vector2 aPos, int aButtonWidth, GeneralMethods aMethod)
         {
+            myGeneralMethods = aMethod;
             myFont = aFont;
             myOption = anOption;
             myText = aText;
@@ -30,12 +32,12 @@ namespace ShootEmUp
         }
 
         // Update-event
-        public void Update(MouseState aMouseState, GeneralMethods aMethod)
+        public void Update(MouseState aMouseState)
         {
             myClicked = false;
             if (!myClickBegin)
             {
-                if (aMethod.PointCollision(myPos, 128, new Vector2(aMouseState.X + 32, aMouseState.Y + 32), 1))
+                if (myGeneralMethods.PointCollision(myPos, 128, new Vector2(aMouseState.X + 32, aMouseState.Y + 32), 1))
                 {
                     if (aMouseState.LeftButton == ButtonState.Pressed)
                     {
@@ -48,7 +50,7 @@ namespace ShootEmUp
                 if (aMouseState.LeftButton == ButtonState.Released)
                 {
                     myClickBegin = false;
-                    if (aMethod.PointCollision(myPos, 128, new Vector2(aMouseState.X + 32, aMouseState.Y + 32), 1))
+                    if (myGeneralMethods.PointCollision(myPos, 128, new Vector2(aMouseState.X + 32, aMouseState.Y + 32), 1))
                     {
                         myClicked = true;
                     }

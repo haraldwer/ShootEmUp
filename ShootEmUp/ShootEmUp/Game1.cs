@@ -105,11 +105,11 @@ namespace ShootEmUp
             myWoodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             myBloodParticleSprite = Content.Load<Texture2D>("sprites/BloodParticle");
             myButtonSprite = Content.Load<Texture2D>("sprites/Button");
-            myPlayer = new Player(myPlayerSprite, new Vector2(50, 50));
-            myStandardEnemyList.Add(new StandardEnemy(myStandardEnemySprite, new Vector2(500, 500), 0f, myBulletSprite, 10, 5)); // Just for testing the enemy
+            myPlayer = new Player(myMethod, myPlayerSprite, new Vector2(50, 50));
+            myStandardEnemyList.Add(new StandardEnemy(myMethod,myStandardEnemySprite, new Vector2(500, 500), 0f, myBulletSprite, 10, 5)); // Just for testing the enemy
             for (int i = 0; i < menuOptions.Length; i++)
             {
-                myMenuButtonList.Add(new MenuButton(myGameFont, menuOptions[i], i, myButtonSprite, new Vector2(myWindowWidth / 2, myWindowHeight / 2), 128));
+                myMenuButtonList.Add(new MenuButton(myGameFont, menuOptions[i], i, myButtonSprite, new Vector2(myWindowWidth / 2, myWindowHeight / 2), 128,myMethod));
             }
             CreateMap(0);
             // TODO: use this.Content to load your game content here
@@ -140,7 +140,7 @@ namespace ShootEmUp
                 case GameState.Menu:
                     for (int i = 0; i < myMenuButtonList.Count; i++)
                     {
-                        myMenuButtonList[i].Update(mouse, myMethod);
+                        myMenuButtonList[i].Update(mouse);
                         if (myMenuButtonList[i].myClicked)
                         {
                             switch(myMenuButtonList[i].myOption)
@@ -220,7 +220,7 @@ namespace ShootEmUp
                         }
                     }
 
-                    myPlayer.Update(myMethod, myEnvironmentList, myBulletList, myBulletSprite, mouse, myViewPos, myStandardEnemyList);
+                    myPlayer.Update(myEnvironmentList, myBulletList, myBulletSprite, mouse, myViewPos, myStandardEnemyList);
                     if (!myPlayer.myAlive)
                     {
                         myGameState = GameState.Menu;
