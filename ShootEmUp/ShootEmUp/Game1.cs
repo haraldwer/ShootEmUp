@@ -24,6 +24,8 @@ namespace ShootEmUp
         Texture2D myButtonSprite;
         Texture2D myHealthPackSprite;
         Texture2D myWeaponSprite;
+        Texture2D myHealthBarForeground;
+        Texture2D myHealthBarBackground;
 
         SpriteFont myGameFont;
 
@@ -113,6 +115,8 @@ namespace ShootEmUp
             myButtonSprite = Content.Load<Texture2D>("sprites/Button");
             myHealthPackSprite = Content.Load<Texture2D>("sprites/HealthPack");
             myWeaponSprite = Content.Load<Texture2D>("sprites/BasicPistol");
+            myHealthBarForeground = Content.Load<Texture2D>("sprites/HPForeground");
+            myHealthBarBackground = Content.Load<Texture2D>("sprites/HPBackground");
             myPlayer = new Player(myMethod, myPlayerSprite, new Vector2(50, 50));
             myStandardEnemyList.Add(new StandardEnemy(myMethod,myStandardEnemySprite, new Vector2(500, 500), 0f, myBulletSprite, 10, 5)); // Just for testing the enemy
             myHealthPackList.Add(new HealthPack(new Vector2(200, 200), myHealthPackSprite));
@@ -282,12 +286,12 @@ namespace ShootEmUp
                     foreach (BloodParticle i in myBloodParticleList)    i.Draw(spriteBatch, myViewPos);
                     foreach (DroppedWeapon i in myDroppedWeaponList)    i.Draw(spriteBatch, myViewPos);
                     foreach (Bullet i in myBulletList)                  i.Draw(spriteBatch, myViewPos);
-                    foreach (StandardEnemy i in myStandardEnemyList)    i.Draw(spriteBatch, myViewPos);
+                    foreach (StandardEnemy i in myStandardEnemyList)    i.Draw(spriteBatch, myViewPos, myHealthBarForeground, myHealthBarBackground);
                     foreach (EnvironmentObject i in myEnvironmentList)  i.Draw(spriteBatch, myViewPos);
                     
                     // TODO: Add your drawing code here
 
-                    myPlayer.Draw(spriteBatch, myViewPos); // Draw player
+                    myPlayer.Draw(spriteBatch, myViewPos, myHealthBarForeground, myHealthBarBackground); // Draw player
                     spriteBatch.DrawString(myGameFont, Convert.ToString(myPlayer.myHP), new Vector2(100, 100), Color.White);
 
                     // Drawing crosshair

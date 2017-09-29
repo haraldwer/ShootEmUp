@@ -15,5 +15,7 @@
     <File>C:/Users/haral/Source/Repos/ShootEmUp/ShootEmUp/ShootEmUp/Content/GameFont.spritefont</File>
     <File>C:/Users/haral/Source/Repos/ShootEmUp/ShootEmUp/ShootEmUp/Content/sprites/HealthPack.png</File>
     <File>C:/Users/haral/Source/Repos/ShootEmUp/ShootEmUp/ShootEmUp/Content/sprites/BasicPistol.png</File>
+    <File>C:/Users/haral/Source/Repos/ShootEmUp/ShootEmUp/ShootEmUp/Content/sprites/HPBackground.png</File>
+    <File>C:/Users/haral/Source/Repos/ShootEmUp/ShootEmUp/ShootEmUp/Content/sprites/HPForeground.png</File>
   </SourceFiles>
 </SourceFileCollection>

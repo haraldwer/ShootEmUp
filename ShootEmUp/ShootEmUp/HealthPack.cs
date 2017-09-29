@@ -35,6 +35,10 @@ namespace ShootEmUp
                 if (aMethod.PointDistance(myPos, aPlayer.myPos) < 10)
                 {
                     aPlayer.myHP += 20;
+                    if (aPlayer.myHP > aPlayer.myMaxHp)
+                    {
+                        aPlayer.myHP = aPlayer.myMaxHp;
+                    }
                     myAlive = false;
                 }
             }
