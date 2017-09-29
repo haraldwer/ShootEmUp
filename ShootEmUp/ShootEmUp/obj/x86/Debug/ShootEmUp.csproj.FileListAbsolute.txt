@@ -158,3 +158,10 @@ C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\BloodParticle.xnb
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Button.xnb
 C:\Users\harald.wergeland\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\GameFont.xnb
+C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\GameFont.xnb
+C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\BloodParticle.xnb
+C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Button.xnb
+C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\Enemy.xnb
+C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\WoodParticle.xnb
+C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\HealthPack.xnb
+C:\Users\haral\Source\Repos\ShootEmUp\ShootEmUp\ShootEmUp\bin\Windows\x86\Debug\Content\sprites\BasicPistol.xnb

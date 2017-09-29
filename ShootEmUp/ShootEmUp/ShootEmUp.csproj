@@ -43,9 +43,11 @@
   <ItemGroup>
     <Compile Include="BloodParticle.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="DroppedWeapon.cs" />
     <Compile Include="GeneralMethods.cs" />
     <Compile Include="EnvironmentObjects.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="HealthPack.cs" />
     <Compile Include="MenuButton.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

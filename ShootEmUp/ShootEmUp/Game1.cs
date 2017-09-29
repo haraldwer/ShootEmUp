@@ -22,6 +22,8 @@ namespace ShootEmUp
         Texture2D myWoodParticleSprite;
         Texture2D myBloodParticleSprite;
         Texture2D myButtonSprite;
+        Texture2D myHealthPackSprite;
+        Texture2D myWeaponSprite;
 
         SpriteFont myGameFont;
 
@@ -33,6 +35,8 @@ namespace ShootEmUp
         List<WoodParticle> myWoodParticleList;
         List<BloodParticle> myBloodParticleList;
         List<MenuButton> myMenuButtonList;
+        List<HealthPack> myHealthPackList;
+        List<DroppedWeapon> myDroppedWeaponList;
 
         public Vector2 myViewPos = new Vector2(100, 100);
         Vector2 myOldViewPos = new Vector2(100, 100);
@@ -85,6 +89,8 @@ namespace ShootEmUp
             myWoodParticleList = new List<WoodParticle>();
             myBloodParticleList = new List<BloodParticle>();
             myMethod = new GeneralMethods();
+            myHealthPackList = new List<HealthPack>();
+            myDroppedWeaponList = new List<DroppedWeapon>();
             base.Initialize();
         }
 
@@ -105,8 +111,12 @@ namespace ShootEmUp
             myWoodParticleSprite = Content.Load<Texture2D>("sprites/WoodParticle");
             myBloodParticleSprite = Content.Load<Texture2D>("sprites/BloodParticle");
             myButtonSprite = Content.Load<Texture2D>("sprites/Button");
+            myHealthPackSprite = Content.Load<Texture2D>("sprites/HealthPack");
+            myWeaponSprite = Content.Load<Texture2D>("sprites/BasicPistol");
             myPlayer = new Player(myMethod, myPlayerSprite, new Vector2(50, 50));
             myStandardEnemyList.Add(new StandardEnemy(myMethod,myStandardEnemySprite, new Vector2(500, 500), 0f, myBulletSprite, 10, 5)); // Just for testing the enemy
+            myHealthPackList.Add(new HealthPack(new Vector2(200, 200), myHealthPackSprite));
+            myDroppedWeaponList.Add(new DroppedWeapon(new Vector2(300, 300), myWeaponSprite, "basic pistol"));
             for (int i = 0; i < menuOptions.Length; i++)
             {
                 myMenuButtonList.Add(new MenuButton(myGameFont, menuOptions[i], i, myButtonSprite, new Vector2(myWindowWidth / 2, myWindowHeight / 2), 128,myMethod));
@@ -193,6 +203,15 @@ namespace ShootEmUp
                         }
                     }
 
+                    for (int i = 0; i < myHealthPackList.Count; i++)
+                    {
+                        myHealthPackList[i].Update(myPlayer, myMethod);
+                        if (!myHealthPackList[i].myAlive)
+                        {
+                            myHealthPackList.RemoveAt(i);
+                        }
+                    }
+
                     for (int i = 0; i < myWoodParticleList.Count; i++)
                     {
                         myWoodParticleList[i].Update();
@@ -208,6 +227,15 @@ namespace ShootEmUp
                         if (!myBloodParticleList[i].myAlive)
                         {
                             myBloodParticleList.RemoveAt(i);
+                        }
+                    }
+
+                    for (int i = 0; i < myDroppedWeaponList.Count; i++)
+                    {
+                        myDroppedWeaponList[i].Update(myPlayer, myMethod);
+                        if (!myDroppedWeaponList[i].myAlive)
+                        {
+                            myDroppedWeaponList.RemoveAt(i);
                         }
                     }
 
@@ -249,11 +277,14 @@ namespace ShootEmUp
                     foreach (MenuButton i in myMenuButtonList) i.Draw(spriteBatch);
                     break;
                 case GameState.Game:
-                    foreach (WoodParticle i in myWoodParticleList) i.Draw(spriteBatch, myViewPos);
-                    foreach (BloodParticle i in myBloodParticleList) i.Draw(spriteBatch, myViewPos);
-                    foreach (Bullet i in myBulletList) i.Draw(spriteBatch, myViewPos);
-                    foreach (StandardEnemy i in myStandardEnemyList) i.Draw(spriteBatch, myViewPos);
-                    foreach (EnvironmentObject i in myEnvironmentList) i.Draw(spriteBatch, myViewPos);
+                    foreach (HealthPack i in myHealthPackList)          i.Draw(spriteBatch, myViewPos);
+                    foreach (WoodParticle i in myWoodParticleList)      i.Draw(spriteBatch, myViewPos);
+                    foreach (BloodParticle i in myBloodParticleList)    i.Draw(spriteBatch, myViewPos);
+                    foreach (DroppedWeapon i in myDroppedWeaponList)    i.Draw(spriteBatch, myViewPos);
+                    foreach (Bullet i in myBulletList)                  i.Draw(spriteBatch, myViewPos);
+                    foreach (StandardEnemy i in myStandardEnemyList)    i.Draw(spriteBatch, myViewPos);
+                    foreach (EnvironmentObject i in myEnvironmentList)  i.Draw(spriteBatch, myViewPos);
+                    
                     // TODO: Add your drawing code here
 
                     myPlayer.Draw(spriteBatch, myViewPos); // Draw player

@@ -23,6 +23,7 @@ namespace ShootEmUp
         public bool myAlive = true;
         int myDamageCooldown = 0;
         GeneralMethods myGeneralMetods;
+        public string myWeapon;
 
 
         // Constructor
