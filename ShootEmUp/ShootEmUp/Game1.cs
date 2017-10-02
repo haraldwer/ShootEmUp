@@ -78,8 +78,8 @@ namespace ShootEmUp
             graphics.PreferredBackBufferHeight = myWindowHeight;      // WindowHeight
             graphics.ApplyChanges();
 
-            menuOptions[0] = "Start game";
-            menuOptions[1] = "Exit game";
+            menuOptions[0] = "Start\n    game";
+            menuOptions[1] = "Exit\n    game";
             myGameState = GameState.Menu;
 
             myMenuButtonList = new List<MenuButton>();

@@ -21,6 +21,7 @@ namespace ShootEmUp
         int myMagSize;
         int myShotsFired = 0;
         int myMaxHp;
+        float myDesHP;
         float myCooldownTime;
         GeneralMethods myGeneralMethods;
         bool myCanMove = true;
@@ -39,6 +40,7 @@ namespace ShootEmUp
             myMagSize = aMagSize;
             myHP = someHP;
             myMaxHp = myHP;
+            myDesHP = myHP;
         }
 
         // Update-event
@@ -92,14 +94,16 @@ namespace ShootEmUp
                 }
             }
             #endregion
+
+            myDesHP += (float)(myHP - myDesHP) * 0.1f;
         }
 
         // Draw-event
         public void Draw(SpriteBatch spriteBatch, Vector2 aViewPos, Texture2D aHealthbarFG, Texture2D aHealthbarBG)
         {
             spriteBatch.Draw(mySprite, myPos + new Vector2(32, 32)-aViewPos, null, Color.White, myDir - 1.57f, new Vector2(32, 32), 1.0f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(aHealthbarBG, myPos - aViewPos, Color.White);
-            spriteBatch.Draw(aHealthbarFG, new Rectangle(Convert.ToInt32(myPos.X - aViewPos.X), Convert.ToInt32(myPos.Y - aViewPos.Y), Convert.ToInt32(((float)myHP / (float)myMaxHp) * 64), 8), Color.White);
+            spriteBatch.Draw(aHealthbarBG, myPos - aViewPos - new Vector2(0, 8), Color.White);
+            spriteBatch.Draw(aHealthbarFG, new Rectangle(Convert.ToInt32(myPos.X - aViewPos.X), Convert.ToInt32(myPos.Y - aViewPos.Y-8), Convert.ToInt32((myDesHP / (float)myMaxHp) * 64), 8), Color.White);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace ShootEmUp
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(mySprite, myPos, Color.White);
-            spriteBatch.DrawString(myFont, myText, myPos + new Vector2(32, 48), Color.Black);
+            spriteBatch.DrawString(myFont, myText, myPos + new Vector2(32, 32), Color.Black);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace ShootEmUp
         int myBulletTimer = 0;
         float myDir = 0;
         public int myHP = 10;
+        float myDesHP = 10; // Used for visual effects
         public int myMaxHp = 10;
         public bool myAlive = true;
         int myDamageCooldown = 0;
@@ -130,14 +131,15 @@ namespace ShootEmUp
                 myDamageCooldown = 0;
             }
             myPos += mySpeed; // Add speed to position
+            myDesHP += (float)(myHP - myDesHP) * 0.3f;
         }
 
         // Draw-event
         public void Draw(SpriteBatch spriteBatch, Vector2 aViewPos, Texture2D aHealthbarFG, Texture2D aHealthbarBG)
         {
             spriteBatch.Draw(mySprite, myPos + new Vector2(32, 32) - aViewPos, null, Color.White, myDir - 1.57f, new Vector2(32, 32), 1.0f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(aHealthbarBG, myPos - new Vector2(0, 32) - aViewPos, Color.White);
-            spriteBatch.Draw(aHealthbarFG, new Rectangle(Convert.ToInt32(myPos.X - aViewPos.X), Convert.ToInt32(myPos.Y - aViewPos.Y - 32), Convert.ToInt32(((float)myHP / (float)myMaxHp) * 64), 8), Color.White); 
+            spriteBatch.Draw(aHealthbarBG, myPos - aViewPos - new Vector2(0, 8), Color.White);
+            spriteBatch.Draw(aHealthbarFG, new Rectangle(Convert.ToInt32(myPos.X - aViewPos.X), Convert.ToInt32(myPos.Y - aViewPos.Y - 8), Convert.ToInt32((myDesHP / (float)myMaxHp) * 64), 8), Color.White);
         }
 
     }
